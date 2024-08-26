@@ -1,4 +1,4 @@
-package com.francescociulla.javadocker.live.user;
+package com.tlab9.live.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

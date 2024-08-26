@@ -1,4 +1,4 @@
-package com.francescociulla.javadocker.live;
+package com.tlab9.live;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

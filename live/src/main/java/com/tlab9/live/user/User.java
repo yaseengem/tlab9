@@ -1,4 +1,4 @@
-package com.francescociulla.javadocker.live.user;
+package com.tlab9.live.user;
 
 import jakarta.persistence.*;
 
