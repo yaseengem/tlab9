@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LiveApplication {
+public class TLab9 {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LiveApplication.class, args);
+		SpringApplication.run(TLab9.class, args);
 	}
 
 }
