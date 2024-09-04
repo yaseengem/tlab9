@@ -1,6 +1,5 @@
 package com.tlab9.live.user;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class UserController {
   @GetMapping
   public List<User> getAllUsers() {
     return userRepository.findAll();
-  } 
+  }
 
   @GetMapping("/{id}")
   public User getUserById(@PathVariable Long id) {
@@ -38,8 +37,17 @@ public class UserController {
   @PutMapping("/{id}")
   public User updateUser(@PathVariable Long id, @RequestBody User user) {
     User existingUser = userRepository.findById(id).get();
-    existingUser.setName("Test"+ user.getName());
-    existingUser.setEmail(user.getEmail());
+    if (user.getName() != null) {
+      existingUser.setName(user.getName());
+    }
+
+    if (user.getEmail() != null) {
+      existingUser.setEmail(user.getEmail());
+    }
+
+    if (user.getRole() != null) {
+      existingUser.setRole(user.getRole());
+    }
     return userRepository.save(existingUser);
   }
 
@@ -54,4 +62,3 @@ public class UserController {
     }
   }
 }
-
