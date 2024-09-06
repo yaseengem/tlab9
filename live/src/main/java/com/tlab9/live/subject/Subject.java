@@ -13,9 +13,9 @@ public class Subject {
     @Column(name = "subject_id")
     private Long subject_id;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "subject_course_ids", joinColumns = @JoinColumn(name = "subject_id"))
-    @Column(name = "course_id")
+    // @ElementCollection(fetch = FetchType.EAGER)
+    // @CollectionTable(name = "subject_course_ids", joinColumns = @JoinColumn(name = "subject_id"))
+    @Column(name = "course_ids")
     private List<Long> course_ids;
 
     @Column(name = "description")
