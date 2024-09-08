@@ -2,7 +2,6 @@ package com.tlab9.live.topic;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import com.tlab9.live.unit.Unit;
 
 @Entity
 @Table(name = "topics")
