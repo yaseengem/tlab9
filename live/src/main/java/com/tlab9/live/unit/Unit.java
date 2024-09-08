@@ -1,21 +1,24 @@
-package com.tlab9.live.subject;
+package com.tlab9.live.unit;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "subjects")
-public class Subject {
+@Table(name = "units")
+public class Unit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subject_id")
-    private Long subject_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "unit_id")
+    private Long unit_id;
 
-    @Column(name = "description")
+    @Column(name = "unit_name", nullable = true, length = 255)
+    private String unit_name;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "sequence_no")
+    @Column(name = "sequence_no", nullable = true)
     private Integer sequence_no;
 
     @Column(name = "created_at")
@@ -24,17 +27,21 @@ public class Subject {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
-    @Column(name = "created_by")
-    private String created_by;
-
-    
     // Getters and setters
-    public Long getSubject_id() {
-        return subject_id;
+    public Long getUnit_id() {
+        return unit_id;
     }
 
-    public void setSubject_id(Long subject_id) {
-        this.subject_id = subject_id;
+    public void setUnit_id(Long unit_id) {
+        this.unit_id = unit_id;
+    }
+
+    public String getUnit_name() {
+        return unit_name;
+    }
+
+    public void setUnit_name(String unit_name) {
+        this.unit_name = unit_name;
     }
 
     public String getDescription() {
@@ -68,16 +75,6 @@ public class Subject {
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
     }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-
 
     @PrePersist
     protected void onCreate() {

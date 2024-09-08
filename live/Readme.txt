@@ -12,4 +12,3 @@ The hierarchy is as below
 - Each unit has multiple topics which are organised in sequence
 - Each topic has multiple sub-topics which are organised in sequence
 
-- Ecah subject can be mapped to multiple courses. Hence the subject list and the sequenece of the subjects in the course cannot be in the subject entity.

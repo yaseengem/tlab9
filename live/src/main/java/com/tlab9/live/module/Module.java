@@ -1,21 +1,26 @@
-package com.tlab9.live.subject;
+package com.tlab9.live.module;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "subjects")
-public class Subject {
+@Table(name = "modules")
+public class Module {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subject_id")
-    private Long subject_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "module_id")
+    private Long module_id;
 
-    @Column(name = "description")
+
+
+    @Column(name = "module_name", nullable = true, length = 255)
+    private String module_name;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "sequence_no")
+    @Column(name = "sequence_no", nullable = true)
     private Integer sequence_no;
 
     @Column(name = "created_at")
@@ -24,17 +29,27 @@ public class Subject {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
-    @Column(name = "created_by")
-    private String created_by;
+
 
     
+
     // Getters and setters
-    public Long getSubject_id() {
-        return subject_id;
+    public Long getModule_id() {
+        return module_id;
     }
 
-    public void setSubject_id(Long subject_id) {
-        this.subject_id = subject_id;
+    public void setModule_id(Long module_id) {
+        this.module_id = module_id;
+    }
+
+
+
+    public String getModule_name() {
+        return module_name;
+    }
+
+    public void setModule_name(String module_name) {
+        this.module_name = module_name;
     }
 
     public String getDescription() {
@@ -49,8 +64,8 @@ public class Subject {
         return sequence_no;
     }
 
-    public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
+    public void setSequence_no(Integer order) {
+        this.sequence_no = order;
     }
 
     public LocalDateTime getCreated_at() {
@@ -68,16 +83,6 @@ public class Subject {
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
     }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-
 
     @PrePersist
     protected void onCreate() {

@@ -3,6 +3,10 @@ package com.tlab9.live.course;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import java.util.List;
+
+import com.tlab9.live.subject.Subject;
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -17,7 +21,7 @@ public class Course {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false, columnDefinition = "TEXT DEFAULT 'ADMIN'")
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String created_by;
 
     @Column(nullable = true)
@@ -31,6 +35,10 @@ public class Course {
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean is_deleted;
+
+    @Column(nullable = true)
+    private List<Long> subjects;
+
 
     @PrePersist
     protected void onCreate() {
@@ -98,4 +106,14 @@ public class Course {
     public void setIs_deleted(boolean is_deleted) {
         this.is_deleted = is_deleted;
     }
+
+    public List<Long> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Long> subjects) {
+        this.subjects = subjects;
+    }
+
+
 }

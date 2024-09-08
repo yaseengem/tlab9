@@ -25,6 +25,7 @@ public class SubjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
     @PostMapping
     public Subject createSubject(@RequestBody Subject subject) {
         return subjectRepository.save(subject);
@@ -34,7 +35,6 @@ public class SubjectController {
     public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @RequestBody Subject subjectDetails) {
         return subjectRepository.findById(id)
                 .map(existingSubject -> {
-                    existingSubject.setCourse_ids(subjectDetails.getCourse_ids());
                     existingSubject.setDescription(subjectDetails.getDescription());
                     existingSubject.setSequence_no(subjectDetails.getSequence_no());
                     existingSubject.setCreated_by(subjectDetails.getCreated_by());
