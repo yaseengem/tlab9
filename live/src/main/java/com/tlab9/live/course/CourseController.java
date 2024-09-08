@@ -38,6 +38,8 @@ public class CourseController {
                     existingCourse.setDescription(courseDetails.getDescription());
                     existingCourse.setCreated_by(courseDetails.getCreated_by());
                     existingCourse.setIs_active(courseDetails.isIs_active());
+                    existingCourse.setHead_video_url(courseDetails.getHead_video_url());
+                    existingCourse.setHead_image_url(courseDetails.getHead_image_url());
                     Course updatedCourse = courseRepository.save(existingCourse);
                     return ResponseEntity.ok(updatedCourse);
                 })

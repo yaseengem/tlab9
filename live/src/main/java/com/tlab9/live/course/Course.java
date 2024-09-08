@@ -2,9 +2,7 @@ package com.tlab9.live.course;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
 import java.util.List;
-
 
 @Entity
 @Table(name = "courses")
@@ -38,7 +36,6 @@ public class Course {
     @Column(nullable = true)
     private List<Long> subjects;
 
-
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
@@ -49,6 +46,12 @@ public class Course {
     protected void onUpdate() {
         updated_at = LocalDateTime.now();
     }
+
+    @Column(name = "head_video_url", length = 255)
+    private String head_video_url;
+
+    @Column(name = "head_image_url", length = 255)
+    private String head_image_url;
 
     // Getters and setters
     public Long getCourse_id() {
@@ -91,6 +94,26 @@ public class Course {
         return updated_at;
     }
 
+    public void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public String getHead_video_url() {
+        return head_video_url;
+    }
+
+    public void setHead_video_url(String head_video_url) {
+        this.head_video_url = head_video_url;
+    }
+
+    public String getHead_image_url() {
+        return head_image_url;
+    }
+
+    public void setHead_image_url(String head_image_url) {
+        this.head_image_url = head_image_url;
+    }
+
     public boolean isIs_active() {
         return is_active;
     }
@@ -98,6 +121,7 @@ public class Course {
     public void setIs_active(boolean is_deleted) {
         this.is_active = is_deleted;
     }
+
     public boolean isIs_deleted() {
         return is_deleted;
     }
@@ -113,6 +137,5 @@ public class Course {
     public void setSubjects(List<Long> subjects) {
         this.subjects = subjects;
     }
-
 
 }

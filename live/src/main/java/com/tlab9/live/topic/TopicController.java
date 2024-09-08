@@ -38,6 +38,8 @@ public class TopicController {
                     existingTopic.setTopic_type(topicDetails.getTopic_type());
                     existingTopic.setContent(topicDetails.getContent());
                     existingTopic.setSequence_no(topicDetails.getSequence_no());
+                    existingTopic.setHead_video_url(topicDetails.getHead_video_url());
+                    existingTopic.setHead_image_url(topicDetails.getHead_image_url());
                     Topic updatedTopic = topicRepository.save(existingTopic);
                     return ResponseEntity.ok(updatedTopic);
                 })

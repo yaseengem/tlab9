@@ -37,6 +37,8 @@ public class ModuleController {
                     existingModule.setModule_name(moduleDetails.getModule_name());
                     existingModule.setDescription(moduleDetails.getDescription());
                     existingModule.setSequence_no(moduleDetails.getSequence_no());
+                    existingModule.setHead_video_url(moduleDetails.getHead_video_url());
+                    existingModule.setHead_image_url(moduleDetails.getHead_image_url());
                     Module updatedModule = moduleRepository.save(existingModule);
                     return ResponseEntity.ok(updatedModule);
                 })

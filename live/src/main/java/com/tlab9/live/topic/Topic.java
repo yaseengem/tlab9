@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Topic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)    
     @Column(name = "topic_id")
     private Long topic_id;
 
@@ -31,6 +31,12 @@ public class Topic {
     @Column(name = "sequence_no", nullable = true)
     private Integer sequence_no;
 
+    @Column(name = "head_video_url", length = 255)
+    private String head_video_url;
+
+    @Column(name = "head_image_url", length = 255)
+    private String head_image_url;
+
     // Getters and setters
     public Long getTopic_id() {
         return topic_id;
@@ -39,7 +45,7 @@ public class Topic {
     public void setTopic_id(Long topic_id) {
         this.topic_id = topic_id;
     }
-
+    
 
     public String getTopic_name() {
         return topic_name;
@@ -87,6 +93,22 @@ public class Topic {
 
     public void setSequence_no(Integer sequence_no) {
         this.sequence_no = sequence_no;
+    }
+
+    public String getHead_video_url() {
+        return head_video_url;
+    }
+
+    public void setHead_video_url(String head_video_url) {
+        this.head_video_url = head_video_url;
+    }
+
+    public String getHead_image_url() {
+        return head_image_url;
+    }
+
+    public void setHead_image_url(String head_image_url) {
+        this.head_image_url = head_image_url;
     }
 
     @PrePersist

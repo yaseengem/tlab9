@@ -37,6 +37,8 @@ public class UnitController {
                     existingUnit.setUnit_name(unitDetails.getUnit_name());
                     existingUnit.setDescription(unitDetails.getDescription());
                     existingUnit.setSequence_no(unitDetails.getSequence_no());
+                    existingUnit.setHead_video_url(unitDetails.getHead_video_url());
+                    existingUnit.setHead_image_url(unitDetails.getHead_image_url());
                     Unit updatedUnit = unitRepository.save(existingUnit);
                     return ResponseEntity.ok(updatedUnit);
                 })

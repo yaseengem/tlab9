@@ -12,8 +12,6 @@ public class Module {
     @Column(name = "module_id")
     private Long module_id;
 
-
-
     @Column(name = "module_name", nullable = true, length = 255)
     private String module_name;
 
@@ -29,9 +27,11 @@ public class Module {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
+    @Column(name = "head_video_url", length = 255)
+    private String head_video_url;
 
-
-    
+    @Column(name = "head_image_url", length = 255)
+    private String head_image_url;
 
     // Getters and setters
     public Long getModule_id() {
@@ -41,8 +41,6 @@ public class Module {
     public void setModule_id(Long module_id) {
         this.module_id = module_id;
     }
-
-
 
     public String getModule_name() {
         return module_name;
@@ -64,8 +62,8 @@ public class Module {
         return sequence_no;
     }
 
-    public void setSequence_no(Integer order) {
-        this.sequence_no = order;
+    public void setSequence_no(Integer sequence_no) {
+        this.sequence_no = sequence_no;
     }
 
     public LocalDateTime getCreated_at() {
@@ -82,6 +80,22 @@ public class Module {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getHead_video_url() {
+        return head_video_url;
+    }
+
+    public void setHead_video_url(String head_video_url) {
+        this.head_video_url = head_video_url;
+    }
+
+    public String getHead_image_url() {
+        return head_image_url;
+    }
+
+    public void setHead_image_url(String head_image_url) {
+        this.head_image_url = head_image_url;
     }
 
     @PrePersist

@@ -25,7 +25,6 @@ public class SubjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
     @PostMapping
     public Subject createSubject(@RequestBody Subject subject) {
         return subjectRepository.save(subject);
@@ -38,6 +37,8 @@ public class SubjectController {
                     existingSubject.setDescription(subjectDetails.getDescription());
                     existingSubject.setSequence_no(subjectDetails.getSequence_no());
                     existingSubject.setCreated_by(subjectDetails.getCreated_by());
+                    existingSubject.setHead_video_url(subjectDetails.getHead_video_url());
+                    existingSubject.setHead_image_url(subjectDetails.getHead_image_url());
                     Subject updatedSubject = subjectRepository.save(existingSubject);
                     return ResponseEntity.ok(updatedSubject);
                 })
