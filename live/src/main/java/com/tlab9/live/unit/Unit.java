@@ -27,11 +27,17 @@ public class Unit {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
+    @Column(name = "created_by")
+    private String created_by;
+
     @Column(name = "head_video_url", length = 255)
     private String head_video_url;
 
     @Column(name = "head_image_url", length = 255)
     private String head_image_url;
+
+    @Column(name = "module_id")
+    private Long module_id;
 
     // Getters and setters
     public Long getUnit_id() {
@@ -82,6 +88,14 @@ public class Unit {
         this.updated_at = updated_at;
     }
 
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
     public String getHead_video_url() {
         return head_video_url;
     }
@@ -96,6 +110,14 @@ public class Unit {
 
     public void setHead_image_url(String head_image_url) {
         this.head_image_url = head_image_url;
+    }
+
+    public Long getModule_id() {
+        return module_id;
+    }
+
+    public void setModule_id(Long module_id) {
+        this.module_id = module_id;
     }
 
     @PrePersist

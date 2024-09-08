@@ -12,6 +12,9 @@ public class Subject {
     @Column(name = "subject_id")
     private Long subject_id;
 
+    @Column(name = "subject_name", nullable = true, length = 255)
+    private String subject_name;
+
     @Column(name = "description")
     private String description;
 
@@ -43,6 +46,14 @@ public class Subject {
 
     public void setSubject_id(Long subject_id) {
         this.subject_id = subject_id;
+    }
+
+    public String getSubject_name() {
+        return subject_name;
+    }
+
+    public void setSubject_name(String subject_name) {
+        this.subject_name = subject_name;
     }
 
     public String getDescription() {

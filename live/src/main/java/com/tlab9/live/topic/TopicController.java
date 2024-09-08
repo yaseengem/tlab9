@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 @RestController
@@ -34,12 +35,7 @@ public class TopicController {
     public ResponseEntity<Topic> updateTopic(@PathVariable Long id, @RequestBody Topic topicDetails) {
         return topicRepository.findById(id)
                 .map(existingTopic -> {
-                    existingTopic.setTopic_name(topicDetails.getTopic_name());
-                    existingTopic.setTopic_type(topicDetails.getTopic_type());
-                    existingTopic.setContent(topicDetails.getContent());
-                    existingTopic.setSequence_no(topicDetails.getSequence_no());
-                    existingTopic.setHead_video_url(topicDetails.getHead_video_url());
-                    existingTopic.setHead_image_url(topicDetails.getHead_image_url());
+                    updateFields(existingTopic, topicDetails);
                     Topic updatedTopic = topicRepository.save(existingTopic);
                     return ResponseEntity.ok(updatedTopic);
                 })
@@ -54,5 +50,22 @@ public class TopicController {
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void updateFields(Topic existingTopic, Topic topicDetails) {
+        Field[] fields = Topic.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if (!field.getName().equals("topic_id")) { // Skip the primary key field
+                    Object newValue = field.get(topicDetails);
+                    if (newValue != null) {
+                        field.set(existingTopic, newValue);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

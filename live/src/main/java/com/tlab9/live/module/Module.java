@@ -27,11 +27,17 @@ public class Module {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
+    @Column(name = "created_by")
+    private String created_by;
+
     @Column(name = "head_video_url", length = 255)
     private String head_video_url;
 
     @Column(name = "head_image_url", length = 255)
     private String head_image_url;
+
+    @Column(name = "subject_id")
+    private Long subject_id;
 
     // Getters and setters
     public Long getModule_id() {
@@ -82,6 +88,14 @@ public class Module {
         this.updated_at = updated_at;
     }
 
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
     public String getHead_video_url() {
         return head_video_url;
     }
@@ -96,6 +110,14 @@ public class Module {
 
     public void setHead_image_url(String head_image_url) {
         this.head_image_url = head_image_url;
+    }
+
+    public Long getSubject_id() {
+        return subject_id;
+    }
+
+    public void setSubject_id(Long subject_id) {
+        this.subject_id = subject_id;
     }
 
     @PrePersist

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 @RestController
@@ -34,11 +35,7 @@ public class ModuleController {
     public ResponseEntity<Module> updateModule(@PathVariable Long id, @RequestBody Module moduleDetails) {
         return moduleRepository.findById(id)
                 .map(existingModule -> {
-                    existingModule.setModule_name(moduleDetails.getModule_name());
-                    existingModule.setDescription(moduleDetails.getDescription());
-                    existingModule.setSequence_no(moduleDetails.getSequence_no());
-                    existingModule.setHead_video_url(moduleDetails.getHead_video_url());
-                    existingModule.setHead_image_url(moduleDetails.getHead_image_url());
+                    updateFields(existingModule, moduleDetails);
                     Module updatedModule = moduleRepository.save(existingModule);
                     return ResponseEntity.ok(updatedModule);
                 })
@@ -53,5 +50,22 @@ public class ModuleController {
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void updateFields(Module existingModule, Module moduleDetails) {
+        Field[] fields = Module.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if (!field.getName().equals("module_id")) { // Skip the primary key field
+                    Object newValue = field.get(moduleDetails);
+                    if (newValue != null) {
+                        field.set(existingModule, newValue);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

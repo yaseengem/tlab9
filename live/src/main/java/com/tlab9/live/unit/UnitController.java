@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 @RestController
@@ -34,11 +35,7 @@ public class UnitController {
     public ResponseEntity<Unit> updateUnit(@PathVariable Long id, @RequestBody Unit unitDetails) {
         return unitRepository.findById(id)
                 .map(existingUnit -> {
-                    existingUnit.setUnit_name(unitDetails.getUnit_name());
-                    existingUnit.setDescription(unitDetails.getDescription());
-                    existingUnit.setSequence_no(unitDetails.getSequence_no());
-                    existingUnit.setHead_video_url(unitDetails.getHead_video_url());
-                    existingUnit.setHead_image_url(unitDetails.getHead_image_url());
+                    updateFields(existingUnit, unitDetails);
                     Unit updatedUnit = unitRepository.save(existingUnit);
                     return ResponseEntity.ok(updatedUnit);
                 })
@@ -53,5 +50,22 @@ public class UnitController {
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void updateFields(Unit existingUnit, Unit unitDetails) {
+        Field[] fields = Unit.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if (!field.getName().equals("unit_id")) { // Skip the primary key field
+                    Object newValue = field.get(unitDetails);
+                    if (newValue != null) {
+                        field.set(existingUnit, newValue);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

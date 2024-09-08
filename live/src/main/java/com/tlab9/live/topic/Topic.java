@@ -8,10 +8,9 @@ import java.time.LocalDateTime;
 public class Topic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)    
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "topic_id")
     private Long topic_id;
-
 
     @Column(name = "topic_name", nullable = false, length = 255)
     private String topic_name;
@@ -22,20 +21,29 @@ public class Topic {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "created_at")
     private LocalDateTime created_at;
 
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
-
+    
     @Column(name = "sequence_no", nullable = true)
     private Integer sequence_no;
+
+    @Column(name = "created_by")
+    private String created_by;
 
     @Column(name = "head_video_url", length = 255)
     private String head_video_url;
 
     @Column(name = "head_image_url", length = 255)
     private String head_image_url;
+
+    @Column(name = "unit_id")
+    private Long unit_id;
 
     // Getters and setters
     public Long getTopic_id() {
@@ -45,7 +53,6 @@ public class Topic {
     public void setTopic_id(Long topic_id) {
         this.topic_id = topic_id;
     }
-    
 
     public String getTopic_name() {
         return topic_name;
@@ -69,6 +76,14 @@ public class Topic {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getCreated_at() {
@@ -95,6 +110,14 @@ public class Topic {
         this.sequence_no = sequence_no;
     }
 
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
     public String getHead_video_url() {
         return head_video_url;
     }
@@ -109,6 +132,14 @@ public class Topic {
 
     public void setHead_image_url(String head_image_url) {
         this.head_image_url = head_image_url;
+    }
+
+    public Long getUnit_id() {
+        return unit_id;
+    }
+
+    public void setUnit_id(Long unit_id) {
+        this.unit_id = unit_id;
     }
 
     @PrePersist
