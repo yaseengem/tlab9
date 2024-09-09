@@ -73,10 +73,10 @@ public class ModuleController {
 
     @PostMapping("/search")
     public List<Module> searchModules(@RequestBody Map<String, String> searchParams) {
-        String columnName = searchParams.get("columnName");
+        String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
-        Specification<Module> spec = (root, query, cb) -> cb.like(cb.lower(root.get(columnName)), "%" + searchTerm.toLowerCase() + "%");
+        Specification<Module> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + searchTerm.toLowerCase() + "%");
 
         return moduleRepository.findAll(spec);
     }

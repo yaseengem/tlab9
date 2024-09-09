@@ -73,10 +73,10 @@ public class TopicController {
 
     @PostMapping("/search")
     public List<Topic> searchTopics(@RequestBody Map<String, String> searchParams) {
-        String columnName = searchParams.get("columnName");
+        String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
-        Specification<Topic> spec = (root, query, cb) -> cb.like(cb.lower(root.get(columnName)), "%" + searchTerm.toLowerCase() + "%");
+        Specification<Topic> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + searchTerm.toLowerCase() + "%");
 
         return topicRepository.findAll(spec);
     }

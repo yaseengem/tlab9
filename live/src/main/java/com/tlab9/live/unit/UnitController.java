@@ -73,10 +73,10 @@ public class UnitController {
 
     @PostMapping("/search")
     public List<Unit> searchUnits(@RequestBody Map<String, String> searchParams) {
-        String columnName = searchParams.get("columnName");
+        String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
-        Specification<Unit> spec = (root, query, cb) -> cb.like(cb.lower(root.get(columnName)), "%" + searchTerm.toLowerCase() + "%");
+        Specification<Unit> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + searchTerm.toLowerCase() + "%");
 
         return unitRepository.findAll(spec);
     }
