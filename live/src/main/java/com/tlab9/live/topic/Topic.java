@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Topic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "topic_id")
     private Long topic_id;
 
