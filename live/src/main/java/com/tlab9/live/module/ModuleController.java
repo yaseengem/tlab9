@@ -1,11 +1,13 @@
 package com.tlab9.live.module;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/modules")
@@ -64,8 +66,18 @@ public class ModuleController {
                     }
                 }
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Failed to update field: " + field.getName(), e);
             }
         }
+    }
+
+    @PostMapping("/search")
+    public List<Module> searchModules(@RequestBody Map<String, String> searchParams) {
+        String columnName = searchParams.get("columnName");
+        String searchTerm = searchParams.get("searchTerm");
+
+        Specification<Module> spec = (root, query, cb) -> cb.like(cb.lower(root.get(columnName)), "%" + searchTerm.toLowerCase() + "%");
+
+        return moduleRepository.findAll(spec);
     }
 }

@@ -1,11 +1,13 @@
 package com.tlab9.live.unit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/units")
@@ -64,8 +66,18 @@ public class UnitController {
                     }
                 }
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Failed to update field: " + field.getName(), e);
             }
         }
+    }
+
+    @PostMapping("/search")
+    public List<Unit> searchUnits(@RequestBody Map<String, String> searchParams) {
+        String columnName = searchParams.get("columnName");
+        String searchTerm = searchParams.get("searchTerm");
+
+        Specification<Unit> spec = (root, query, cb) -> cb.like(cb.lower(root.get(columnName)), "%" + searchTerm.toLowerCase() + "%");
+
+        return unitRepository.findAll(spec);
     }
 }

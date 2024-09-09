@@ -1,10 +1,13 @@
 package com.tlab9.live.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -34,12 +37,7 @@ public class CourseController {
     public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
         return courseRepository.findById(id)
                 .map(existingCourse -> {
-                    existingCourse.setCourse_name(courseDetails.getCourse_name());
-                    existingCourse.setDescription(courseDetails.getDescription());
-                    existingCourse.setCreated_by(courseDetails.getCreated_by());
-                    existingCourse.setIs_active(courseDetails.isIs_active());
-                    existingCourse.setHead_video_url(courseDetails.getHead_video_url());
-                    existingCourse.setHead_image_url(courseDetails.getHead_image_url());
+                    updateFields(existingCourse, courseDetails);
                     Course updatedCourse = courseRepository.save(existingCourse);
                     return ResponseEntity.ok(updatedCourse);
                 })
@@ -50,10 +48,36 @@ public class CourseController {
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         return courseRepository.findById(id)
                 .map(course -> {
-                    course.setIs_deleted(true);
-                    courseRepository.save(course);
+                    courseRepository.delete(course);
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void updateFields(Course existingCourse, Course courseDetails) {
+        Field[] fields = Course.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                if (!field.getName().equals("course_id")) { // Skip the primary key field
+                    Object newValue = field.get(courseDetails);
+                    if (newValue != null) {
+                        field.set(existingCourse, newValue);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Failed to update field: " + field.getName(), e);
+            }
+        }
+    }
+
+    @PostMapping("/search")
+    public List<Course> searchCourses(@RequestBody Map<String, String> searchParams) {
+        String columnName = searchParams.get("columnName");
+        String searchTerm = searchParams.get("searchTerm");
+
+        Specification<Course> spec = (root, query, cb) -> cb.like(cb.lower(root.get(columnName)), "%" + searchTerm.toLowerCase() + "%");
+
+        return courseRepository.findAll(spec);
     }
 }
