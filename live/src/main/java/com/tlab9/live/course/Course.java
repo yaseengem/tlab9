@@ -36,9 +36,6 @@ public class Course {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean is_deleted;
 
-    @Column(nullable = true)
-    private List<Long> subjects;
-
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
@@ -141,11 +138,4 @@ public class Course {
         this.is_deleted = is_deleted;
     }
 
-    public List<Long> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Long> subjects) {
-        this.subjects = subjects;
-    }
 }
