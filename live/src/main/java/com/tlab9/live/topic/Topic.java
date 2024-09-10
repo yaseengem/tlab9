@@ -29,7 +29,9 @@ public class Topic {
 
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
-    
+
+    @Column(name = "topic_code", nullable = true, length = 50)
+    private String topic_code;
     @Column(name = "sequence_no", nullable = true)
     private Integer sequence_no;
 
@@ -100,6 +102,14 @@ public class Topic {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getTopic_code() {
+        return topic_code;
+    }
+
+    public void setTopic_code(String topic_code) {
+        this.topic_code = topic_code;
     }
 
     public Integer getSequence_no() {

@@ -15,6 +15,9 @@ public class Course {
     @Column(nullable = false)
     private String course_name;
 
+    @Column(nullable = false)
+    private String course_code;
+
     @Column(nullable = true, columnDefinition = "TEXT")
     private String description;
 
@@ -70,6 +73,14 @@ public class Course {
         this.course_name = course_name;
     }
 
+    public String getCourse_code() {
+        return course_code;
+    }
+
+    public void setCourse_code(String course_code) {
+        this.course_code = course_code;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -118,8 +129,8 @@ public class Course {
         return is_active;
     }
 
-    public void setIs_active(boolean is_deleted) {
-        this.is_active = is_deleted;
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
     }
 
     public boolean isIs_deleted() {
@@ -137,5 +148,4 @@ public class Course {
     public void setSubjects(List<Long> subjects) {
         this.subjects = subjects;
     }
-
 }

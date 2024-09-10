@@ -39,6 +39,9 @@ public class Module {
     @Column(name = "subject_id")
     private Long subject_id;
 
+    @Column(name = "module_code", nullable = true, length = 50)
+    private String module_code;
+
     // Getters and setters
     public Long getModule_id() {
         return module_id;
@@ -118,6 +121,14 @@ public class Module {
 
     public void setSubject_id(Long subject_id) {
         this.subject_id = subject_id;
+    }
+
+    public String getModule_code() {
+        return module_code;
+    }
+
+    public void setModule_code(String module_code) {
+        this.module_code = module_code;
     }
 
     @PrePersist

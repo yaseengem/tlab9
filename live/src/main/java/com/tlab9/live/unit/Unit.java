@@ -39,6 +39,9 @@ public class Unit {
     @Column(name = "module_id")
     private Long module_id;
 
+    @Column(name = "unit_code", nullable = true, length = 50)
+    private String unit_code;
+
     // Getters and setters
     public Long getUnit_id() {
         return unit_id;
@@ -118,6 +121,14 @@ public class Unit {
 
     public void setModule_id(Long module_id) {
         this.module_id = module_id;
+    }
+
+    public String getUnit_code() {
+        return unit_code;
+    }
+
+    public void setUnit_code(String unit_code) {
+        this.unit_code = unit_code;
     }
 
     @PrePersist
