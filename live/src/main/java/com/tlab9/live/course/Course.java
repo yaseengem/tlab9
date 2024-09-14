@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Entity
 @Table(name = "courses")
 @Schema(description = "Course entity representing a course in the system")
+@Data
 public class Course {
 
     @Id
@@ -55,10 +57,6 @@ public class Course {
     @Schema(description = "URL of the head image for the course", example = "http://example.com/image.jpg")
     private String head_image_url;
 
-    // Getters and setters...
-
-
-
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
@@ -68,92 +66,5 @@ public class Course {
     @PreUpdate
     protected void onUpdate() {
         updated_at = LocalDateTime.now();
-    }
-    public Long getCourse_id() {
-        return course_id;
-    }
-
-    public void setCourse_id(Long course_id) {
-        this.course_id = course_id;
-    }
-
-    public String getCourse_name() {
-        return course_name;
-    }
-
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
-    }
-
-    public String getCourse_code() {
-        return course_code;
-    }
-
-    public void setCourse_code(String course_code) {
-        this.course_code = course_code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public boolean isIs_active() {
-        return is_active;
-    }
-
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
-    }
-
-    public boolean isIs_deleted() {
-        return is_deleted;
-    }
-
-    public void setIs_deleted(boolean is_deleted) {
-        this.is_deleted = is_deleted;
-    }
-
-    public String getHead_video_url() {
-        return head_video_url;
-    }
-
-    public void setHead_video_url(String head_video_url) {
-        this.head_video_url = head_video_url;
-    }
-
-    public String getHead_image_url() {
-        return head_image_url;
-    }
-
-    public void setHead_image_url(String head_image_url) {
-        this.head_image_url = head_image_url;
     }
 }
