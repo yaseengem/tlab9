@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/courses")
 @Tag(name = "Course", description = "API for managing courses")
+@Slf4j
 public class CourseController {
 
     @Autowired
@@ -22,47 +24,71 @@ public class CourseController {
     @Operation(summary = "Get all courses")
     @GetMapping
     public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+        log.info("Entering getAllCourses method");
+        List<Course> courses = courseRepository.findAll();
+        log.info("Exiting getAllCourses method");
+        return courses;
     }
 
     @Operation(summary = "Get a course by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-        return courseRepository.findById(id)
+        log.info("Entering getCourseById method with id: {}", id);
+        ResponseEntity<Course> response = courseRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+        log.info("Exiting getCourseById method with response: {}", response);
+        return response;
     }
 
     @Operation(summary = "Create a new course")
     @PostMapping
     public Course createCourse(@RequestBody Course course) {
-        return courseRepository.save(course);
+        log.info("Entering createCourse method with course: {}", course);
+        Course savedCourse = courseRepository.save(course);
+        log.info("Exiting createCourse method with saved course: {}", savedCourse);
+        return savedCourse;
     }
 
     @Operation(summary = "Update an existing course")
     @PutMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
-        return courseRepository.findById(id)
+        log.info("Entering updateCourse method with id: {} and courseDetails: {}", id, courseDetails);
+        ResponseEntity<Course> response = courseRepository.findById(id)
                 .map(existingCourse -> {
                     updateFields(existingCourse, courseDetails);
                     Course updatedCourse = courseRepository.save(existingCourse);
+                    log.info("Exiting updateCourse method with updated course: {}", updatedCourse);
                     return ResponseEntity.ok(updatedCourse);
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> {
+                    log.warn("Course with id: {} not found", id);
+                    return ResponseEntity.notFound().build();
+                });
+        log.info("Exiting updateCourse method with response: {}", response);
+        return response;
     }
 
     @Operation(summary = "Delete an existing course")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
-        return courseRepository.findById(id)
+        log.info("Entering deleteCourse method with id: {}", id);
+        ResponseEntity<Void> response = courseRepository.findById(id)
                 .map(course -> {
                     courseRepository.delete(course);
+                    log.info("Exiting deleteCourse method after deleting course with id: {}", id);
                     return ResponseEntity.ok().<Void>build();
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> {
+                    log.warn("Course with id: {} not found", id);
+                    return ResponseEntity.notFound().build();
+                });
+        log.info("Exiting deleteCourse method with response: {}", response);
+        return response;
     }
 
     private void updateFields(Course existingCourse, Course courseDetails) {
+        log.info("Entering updateFields method with existingCourse: {} and courseDetails: {}", existingCourse, courseDetails);
         Field[] fields = Course.class.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
@@ -74,20 +100,25 @@ public class CourseController {
                     }
                 }
             } catch (IllegalAccessException e) {
+                log.error("Error updating field: {}", field.getName(), e);
                 throw new RuntimeException("Failed to update field: " + field.getName(), e);
             }
         }
+        log.info("Exiting updateFields method");
     }
 
     @Operation(summary = "Search for the courses based on a field and search term")
     @PostMapping("/search")
     public List<Course> searchCourses(@RequestBody Map<String, String> searchParams) {
+        log.info("Entering searchCourses method with searchParams: {}", searchParams);
         String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
         Specification<Course> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)),
                 "%" + searchTerm.toLowerCase() + "%");
 
-        return courseRepository.findAll(spec);
+        List<Course> courses = courseRepository.findAll(spec);
+        log.info("Exiting searchCourses method with courses: {}", courses);
+        return courses;
     }
 }
