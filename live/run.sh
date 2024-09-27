@@ -7,6 +7,8 @@ export MAVEN_HOME=/opt/apache-maven-3.9.9
 export PATH=$MAVEN_HOME/bin:$PATH
 
 
+# rm -rf target/
+
 mvn clean package -DskipTests
 # mvn package -DskipTests
 
