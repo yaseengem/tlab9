@@ -25,8 +25,9 @@ public class ClaudeService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
+
     @Autowired
-    public ClaudeService(RestTemplate restTemplate, ObjectMapper objectMapper) {
+        public ClaudeService(RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
@@ -40,6 +41,7 @@ public class ClaudeService {
         Prompt requestBody = new Prompt();
         requestBody.setModel("claude-3-5-sonnet-20240620");
         requestBody.setMax_tokens(20);
+        requestBody.setTemperature(0.7); // Set the temperature here
         requestBody.setMessages(Collections.singletonList(new Prompt.Message("user", prompt)));
 
         String jsonRequestBody = objectMapper.writeValueAsString(requestBody);
@@ -47,6 +49,8 @@ public class ClaudeService {
         HttpEntity<String> entity = new HttpEntity<>(jsonRequestBody, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
+
+
 
         JsonNode responseJson = objectMapper.readTree(response.getBody());
         JsonNode contentArray = responseJson.get("content");
@@ -57,5 +61,5 @@ public class ClaudeService {
 
         // Handle the case where the "content" field is missing
         throw new RuntimeException("The response does not contain a 'content' field.");
-    }
+        }
 }

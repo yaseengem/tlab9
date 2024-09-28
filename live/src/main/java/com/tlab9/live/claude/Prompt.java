@@ -5,9 +5,9 @@ import java.util.List;
 public class Prompt {
     private String model;
     private int max_tokens;
+    private double temperature;
     private List<Message> messages;
 
-    // Getters and setters
     public String getModel() {
         return model;
     }
@@ -20,8 +20,16 @@ public class Prompt {
         return max_tokens;
     }
 
-    public void setMax_tokens(int maxTokens) {
-        this.max_tokens = maxTokens;
+    public void setMax_tokens(int max_tokens) {
+        this.max_tokens = max_tokens;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
     }
 
     public List<Message> getMessages() {
@@ -35,13 +43,13 @@ public class Prompt {
     public static class Message {
         private String role;
         private String content;
+        private double temperature;
 
         public Message(String role, String content) {
             this.role = role;
             this.content = content;
         }
 
-        // Getters and setters
         public String getRole() {
             return role;
         }
@@ -56,6 +64,10 @@ public class Prompt {
 
         public void setContent(String content) {
             this.content = content;
+        }
+
+        public void setTemperature(double temperature) {
+            this.temperature = temperature;
         }
     }
 }
