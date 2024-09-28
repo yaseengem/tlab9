@@ -22,15 +22,38 @@ public class SecurityConfig {
     @Autowired
     private ApiKeyFilter apiKeyFilter;
 
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
+    // Exception {
+    // http
+    // .authorizeHttpRequests(authz -> authz
+    // .requestMatchers(
+    // "/v3/api-docs",
+    // "/swagger-ui/**"
+    // ).permitAll()
+    // .anyRequest().authenticated()
+    // )
+    // .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class)
+    // .exceptionHandling(exceptionHandling -> exceptionHandling
+    // .authenticationEntryPoint((request, response, authException) ->
+    // response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+    // )
+    // .csrf(csrf -> csrf.disable());
+
+    // return http.build();
+    // }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/subjects/**").permitAll()
-                        .requestMatchers("/api/courses/**").authenticated()
-                        .anyRequest().authenticated()
-                )
+                        // .requestMatchers("/api/subjects").permitAll()
+                        // .requestMatchers("/api/subjects/**").permitAll()
+                        // .requestMatchers("/swagger-ui.html").permitAll()
+                        // .requestMatchers("/swagger-ui/**").permitAll()
+                        // .requestMatchers("/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated())
                 .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
