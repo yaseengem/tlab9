@@ -12,6 +12,11 @@ export PATH=$MAVEN_HOME/bin:$PATH
 mvn clean package -DskipTests
 # mvn package -DskipTests
 
+
+# Enable debug logging for Docker Compose
+export COMPOSE_LOG_LEVEL=DEBUG
+
+# Build and start the Docker containers
 # sudo docker-compose up --build
 docker compose up --build
 
