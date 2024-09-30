@@ -14,7 +14,7 @@ mvn clean package -DskipTests
 
 
 # Enable debug logging for Docker Compose
-export COMPOSE_LOG_LEVEL=DEBUG
+# export COMPOSE_LOG_LEVEL=DEBUG
 
 # Build and start the Docker containers
 # sudo docker-compose up --build
