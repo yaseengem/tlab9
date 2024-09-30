@@ -2,10 +2,10 @@ version: '3.9'
 
 services:
 
-  #new service (java_app)
+  #new service (app)
   java_app:
-    container_name: java_app
-    image: track9/java_app:1.0.0
+    container_name: app_${ENV}
+    image: track9/app:${ENV}
     build: .
     ports:
       - "${DOCKER_PORT}:8080"
@@ -24,7 +24,7 @@ services:
   #old service (postgres)
 
   java_db:
-    container_name: java_db
+    container_name: db_${ENV}
     image: postgres:12
     ports:
       - 5432:5432
