@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   #new service (app)
-  app_${ENV}:
+  track_app:
     container_name: app_${ENV}
     image: track9/app:${ENV}
     build: .
@@ -13,7 +13,7 @@ services:
       - ./secrets.env
       - ./var.env
     depends_on:
-      - java_db
+      - track_db
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
@@ -24,7 +24,7 @@ services:
 
   #old service (postgres)
 
-  db_${ENV}:
+  track_db:
     container_name: db_${ENV}
     image: postgres:12
     ports:
