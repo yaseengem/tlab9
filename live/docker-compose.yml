@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   #new service (app)
-  java_app:
+  app_${ENV}:
     container_name: app_${ENV}
     image: track9/app:${ENV}
     build: .
@@ -24,7 +24,7 @@ services:
 
   #old service (postgres)
 
-  java_db:
+  db_${ENV}:
     container_name: db_${ENV}
     image: postgres:12
     ports:
