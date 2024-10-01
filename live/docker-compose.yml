@@ -4,12 +4,13 @@ services:
 
   #new service (app)
   track_app:
-    container_name: app_${ENV}
+    container_name: track_app
     image: track9/app:${ENV}
     build: .
     ports:
       - "${DOCKER_PORT}:8080"
     env_file:
+      - ./.env
       - ./secrets.env
       - ./var.env
     depends_on:
@@ -25,7 +26,7 @@ services:
   #old service (postgres)
 
   track_db:
-    container_name: db_${ENV}
+    container_name: track_db
     image: postgres:12
     ports:
       - 5432:5432
