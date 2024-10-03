@@ -56,7 +56,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         } else {
             log.warn("Unauthorized request with API Key: {}", requestApiKey);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized to access TRACK");
+            response.getWriter().write("Unauthorized to access steps");
         }
     }
 
