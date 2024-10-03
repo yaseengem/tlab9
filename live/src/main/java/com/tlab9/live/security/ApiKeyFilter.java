@@ -14,6 +14,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 @Component
 public class ApiKeyFilter extends OncePerRequestFilter {
 
@@ -54,9 +58,12 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(new ApiKeyAuthenticationToken(requestApiKey, true));
             filterChain.doFilter(request, response);
         } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy HH mm ss");
+            String timestamp = LocalDateTime.now().format(formatter);
+
             log.warn("Unauthorized request with API Key: {}", requestApiKey);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized to access steps");
+            response.getWriter().write("Unauthorized to access steps at " + timestamp);
         }
     }
 
