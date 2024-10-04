@@ -11,16 +11,9 @@ services:
       - "${DOCKER_PORT}:8080"
     env_file:
       - ./.env
-      - ./secrets.env
       - ./var.env
     depends_on:
       - track_db
-    command: >
-      sh -c "
-      ./mvnw flyway:repair &&
-      ./mvnw flyway:migrate &&
-      ./mvnw spring-boot:run
-      "
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
@@ -42,15 +35,6 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
-    # Commented as this code below is not working. I wanted to avoid the default credentials.. But it is not working.  
-    # user: "postgres"
-    # command: >
-    #   bash -c "
-    #   postgres -D /var/lib/postgresql/data &
-    #   sleep 5 &&
-    #   psql -U postgres -tc \"SELECT 1 FROM pg_roles WHERE rolname='track'\" | grep -q 1 || psql -U postgres -c \"CREATE USER track WITH PASSWORD 'trackdb';\" &&
-    #   psql -U postgres -c \"GRANT ALL PRIVILEGES ON DATABASE postgres TO track;\" &&
-    #   fg
-    #   "
+
 volumes:
   pgdata: {}
