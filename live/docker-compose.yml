@@ -15,6 +15,12 @@ services:
       - ./var.env
     depends_on:
       - track_db
+    command: >
+      sh -c "
+      ./mvnw flyway:repair &&
+      ./mvnw flyway:migrate &&
+      ./mvnw spring-boot:run
+      "
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
