@@ -82,6 +82,9 @@ public class GoogleTokenFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
+        else {
+            logger.warn("Invalid access token: missing or invalid format.");
+        }
         filterChain.doFilter(request, response);
     }
 }
