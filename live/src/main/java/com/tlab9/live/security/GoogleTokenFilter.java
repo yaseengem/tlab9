@@ -3,6 +3,7 @@ package com.tlab9.live.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,79 +24,64 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+
+
 @Component
 public class GoogleTokenFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(GoogleTokenFilter.class);
 
+    private final TokenValidationService tokenValidationService;
+
     @Value("${google.client.id}")
     private String clientId;
 
-    private final RestTemplate restTemplate;
-
-    public GoogleTokenFilter(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public GoogleTokenFilter(TokenValidationService tokenValidationService) {
+        this.tokenValidationService = tokenValidationService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String accessToken = request.getHeader("Authorization");
 
-        if (accessToken != null && accessToken.startsWith("Bearer ")) {
-            logger.info("Authorization header found with Bearer token.");
-            accessToken = accessToken.substring(7);
-
-            try {
-                String tokenInfoUrl = "https://oauth2.googleapis.com/tokeninfo?access_token=" + accessToken;
-                ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
-                        tokenInfoUrl,
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<Map<String, Object>>() {}
-                );
-                Map<String, Object> tokenInfo = responseEntity.getBody();
-
-                if (tokenInfo != null) {
-                    String audience = (String) tokenInfo.get("aud");
-                    if (clientId.equals(audience)) {
-                        String userId = (String) tokenInfo.get("sub");
-                        logger.info("User ID: " + userId);
-                        logger.info("Token verified successfully.");
-
-                        // Create a UserDetails object
-                        UserDetails userDetails = User.withUsername(userId)
-                                .password("") // No password needed for token authentication
-                                .authorities(Collections.emptyList()) // Set authorities if needed
-                                .build();
-
-                        // Create an Authentication object
-                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-
-                        // Set the authentication in the SecurityContext
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    } else {
-                        logger.warn("Invalid access token: audience mismatch.");
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    }
-                } else {
-                    logger.warn("Invalid access token: token info is null.");
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                }
-            } catch (HttpClientErrorException e) {
-                logger.error("Token verification failed: {}", e.getStatusCode());
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            } catch (Exception e) {
-                logger.error("Token verification failed.", e);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-        } else {
-            logger.warn("Authorization header is missing or does not contain a Bearer token.");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        // Check if the request is already authenticated (skip if true)
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
-        // Continue the request processing regardless of token verification result
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7); // Remove "Bearer " prefix
+            Map<String, Object> tokenInfo = tokenValidationService.validateToken(token);
+            if (tokenInfo != null) {
+                String audience = (String) tokenInfo.get("aud");
+                if (clientId.equals(audience)) {
+                    String userId = (String) tokenInfo.get("sub");
+                    logger.info("User ID: " + userId);
+                    logger.info("Token verified successfully.");
+
+                    // Create a UserDetails object
+                    UserDetails userDetails = User.withUsername(userId)
+                            .password("") // No password needed for token authentication
+                            .authorities(Collections.emptyList()) // Set authorities if needed
+                            .build();
+
+                    // Create an Authentication object
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+
+                    // Set the authentication in the SecurityContext
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    logger.warn("Invalid access token: audience mismatch.");
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                }
+            } else {
+                logger.warn("Invalid access token: validation failed.");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        }
         filterChain.doFilter(request, response);
     }
 }
