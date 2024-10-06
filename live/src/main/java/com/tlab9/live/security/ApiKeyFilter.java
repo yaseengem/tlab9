@@ -17,7 +17,6 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 @Component
 public class ApiKeyFilter extends OncePerRequestFilter {
 
@@ -38,6 +37,12 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // Check if the request is already authenticated (skip if true)
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String requestApiKey = request.getHeader(apiKeyHeader);
         log.info("Request received. API Key Header: {}, Request API Key: {}", apiKeyHeader, requestApiKey);
@@ -64,6 +69,8 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             log.warn("Unauthorized request with API Key: {}", requestApiKey);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized to access steps at " + timestamp);
+
+            filterChain.doFilter(request, response);
         }
     }
 

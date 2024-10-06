@@ -22,6 +22,10 @@ public class SecurityConfig {
     @Autowired
     private ApiKeyFilter apiKeyFilter;
 
+
+    @Autowired
+    private GoogleTokenFilter googleTokenFilter;
+
     // @Bean
     // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
     // Exception {
@@ -54,7 +58,9 @@ public class SecurityConfig {
                         // .requestMatchers("/swagger-ui/**").permitAll()
                         // .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
+                .addFilterBefore(googleTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class)
+ 
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> {
                             log.warn("Unauthorized request - {}", authException.getMessage());
