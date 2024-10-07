@@ -53,4 +53,28 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
         }
     }
+
+    @GetMapping("/download/{filename}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(UPLOAD_DIR, filename);
+            if (!Files.exists(filePath)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+    
+            byte[] fileContent = Files.readAllBytes(filePath);
+            String contentType = Files.probeContentType(filePath);
+    
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+            headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+    
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(fileContent);
+        } catch (IOException e) {
+            logger.error("Error downloading file", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
