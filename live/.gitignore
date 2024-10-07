@@ -35,3 +35,5 @@ build/
 
 secrets.env
 .env
+
+/app

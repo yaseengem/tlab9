@@ -5,56 +5,118 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/api/modules")
+@Tag(name = "Module", description = "API for managing modules")
+@Slf4j
 public class ModuleController {
 
     @Autowired
     private ModuleRepository moduleRepository;
 
+    @Operation(summary = "Get all modules")
     @GetMapping
     public List<Module> getAllModules() {
-        return moduleRepository.findAll();
+        log.info("Entering getAllModules method");
+        List<Module> modules = null;
+        try {
+            modules = moduleRepository.findAll();
+            log.info("Successfully retrieved all modules");
+        } catch (Exception e) {
+            log.error("Error occurred while retrieving modules: ", e);
+        }
+        log.info("Exiting getAllModules method");
+        return modules;
     }
 
+    @Operation(summary = "Get a module by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Module> getModuleById(@PathVariable Long id) {
-        return moduleRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        log.info("Entering getModuleById method with id: {}", id);
+        ResponseEntity<Module> response = null;
+        try {
+            response = moduleRepository.findById(id)
+                    .map(module -> {
+                        log.info("Module found: {}", module);
+                        return ResponseEntity.ok(module);
+                    })
+                    .orElseGet(() -> {
+                        log.warn("Module with id {} not found", id);
+                        return ResponseEntity.notFound().build();
+                    });
+            log.info("Successfully retrieved module with id: {}", id);
+        } catch (Exception e) {
+            log.error("Error occurred while retrieving module with id: {}", id, e);
+        }
+        log.info("Exiting getModuleById method");
+        return response;
     }
 
+    @Operation(summary = "Create a new module")
     @PostMapping
     public Module createModule(@RequestBody Module module) {
-        return moduleRepository.save(module);
+        log.info("Entering createModule method with module: {}", module);
+        Module createdModule = null;
+        try {
+            createdModule = moduleRepository.save(module);
+            log.info("Successfully created module: {}", createdModule);
+        } catch (Exception e) {
+            log.error("Error occurred while creating module: ", e);
+        }
+        log.info("Exiting createModule method");
+        return createdModule;
     }
 
+    @Operation(summary = "Update a module by ID")
     @PutMapping("/{id}")
     public ResponseEntity<Module> updateModule(@PathVariable Long id, @RequestBody Module moduleDetails) {
-        return moduleRepository.findById(id)
+        log.info("Entering updateModule method with id: {} and moduleDetails: {}", id, moduleDetails);
+        ResponseEntity<Module> response = moduleRepository.findById(id)
                 .map(existingModule -> {
+                    log.info("Module found with id: {}", id);
                     updateFields(existingModule, moduleDetails);
                     Module updatedModule = moduleRepository.save(existingModule);
+                    log.info("Successfully updated module: {}", updatedModule);
                     return ResponseEntity.ok(updatedModule);
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> {
+                    log.warn("Module with id {} not found", id);
+                    return ResponseEntity.notFound().build();
+                });
+        log.info("Exiting updateModule method");
+        return response;
     }
 
+    @Operation(summary = "Delete a module by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteModule(@PathVariable Long id) {
-        return moduleRepository.findById(id)
+        log.info("Entering deleteModule method with id: {}", id);
+        ResponseEntity<Void> response = moduleRepository.findById(id)
                 .map(module -> {
+                    log.info("Module found with id: {}", id);
                     moduleRepository.delete(module);
+                    log.info("Successfully deleted module with id: {}", id);
                     return ResponseEntity.ok().<Void>build();
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> {
+                    log.warn("Module with id {} not found", id);
+                    return ResponseEntity.notFound().build();
+                });
+        log.info("Exiting deleteModule method");
+        return response;
     }
 
     private void updateFields(Module existingModule, Module moduleDetails) {
+        log.info("Entering updateFields method");
         Field[] fields = Module.class.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
@@ -62,22 +124,41 @@ public class ModuleController {
                 if (!field.getName().equals("module_id")) { // Skip the primary key field
                     Object newValue = field.get(moduleDetails);
                     if (newValue != null) {
+                        log.info("Updating field: {} with new value: {}", field.getName(), newValue);
                         field.set(existingModule, newValue);
                     }
                 }
             } catch (IllegalAccessException e) {
+                log.error("Failed to update field: {}", field.getName(), e);
                 throw new RuntimeException("Failed to update field: " + field.getName(), e);
             }
         }
+        log.info("Exiting updateFields method");
     }
 
+    @Operation(summary = "Search for the modules based on a field and search term")
     @PostMapping("/search")
     public List<Module> searchModules(@RequestBody Map<String, String> searchParams) {
+        log.info("Entering searchModules method with searchParams: {}", searchParams);
         String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
-
-        Specification<Module> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + searchTerm.toLowerCase() + "%");
-
-        return moduleRepository.findAll(spec);
+    
+        Specification<Module> spec;
+        if (field != null && !field.isEmpty()) {
+            log.info("Searching modules by field: {} with searchTerm: {}", field, searchTerm);
+            spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)),
+                    "%" + searchTerm.toLowerCase() + "%");
+        } else {
+            log.info("Searching modules by default fields with searchTerm: {}", searchTerm);
+            spec = (root, query, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("module_name")), "%" + searchTerm.toLowerCase() + "%"),
+                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%"));
+        }
+    
+        List<Module> modules = moduleRepository.findAll(spec);
+        log.info("Successfully found {} modules", modules.size());
+        log.info("Exiting searchModules method");
+        return modules;
     }
+
 }

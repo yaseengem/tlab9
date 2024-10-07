@@ -26,6 +26,17 @@ export PATH=$JAVA_HOME/bin:$PATH
 export MAVEN_HOME=/opt/apache-maven-3.9.9
 export PATH=$MAVEN_HOME/bin:$PATH
 
+# Remove the existing volume if in dev environment
+if [ "$ENV" = "dev" ]; then
+  echo "Stopping and removing containers..."
+  docker-compose down
+  echo "Removing existing pgdata volume..."
+  docker volume ls
+  docker volume rm -f live_pgdata
+  docker volume ls
+fi
+
+
 # rm -rf target/
 
 mvn clean package -DskipTests

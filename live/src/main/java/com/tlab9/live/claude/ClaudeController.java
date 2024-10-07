@@ -35,6 +35,7 @@ public class ClaudeController {
         ObjectNode responseObject = objectMapper.createObjectNode();
         responseObject.put("type", "text");
         responseObject.put("text", "I am dummy response. Later this can be lot more..");
+        responseObject.put("prompt", prompt); // Add the prompt to the response
         response.add(responseObject);
 
         return ResponseEntity.ok(response);

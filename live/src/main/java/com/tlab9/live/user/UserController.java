@@ -1,19 +1,20 @@
 package com.tlab9.live.user;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User", description = "API for managing users")
+@Slf4j
 public class UserController {
 
   @Autowired
@@ -24,41 +25,16 @@ public class UserController {
     return userRepository.findAll();
   }
 
+
+  @Operation(summary = "Get a user by ID")
   @GetMapping("/{id}")
-  public User getUserById(@PathVariable Long id) {
-    return userRepository.findById(id).get();
+  public ResponseEntity<User> getUserById(@PathVariable Long id) {
+      log.info("Entering getUserById method with id: {}", id);
+      ResponseEntity<User> response = userRepository.findById(id)
+              .map(ResponseEntity::ok)
+              .orElse(ResponseEntity.notFound().build());
+      log.info("Exiting getUserById method with response: {}", response);
+      return response;
   }
 
-  @PostMapping
-  public User createUser(@RequestBody User user) {
-    return userRepository.save(user);
-  }
-
-  @PutMapping("/{id}")
-  public User updateUser(@PathVariable Long id, @RequestBody User user) {
-    User existingUser = userRepository.findById(id).get();
-    if (user.getName() != null) {
-      existingUser.setName(user.getName());
-    }
-
-    if (user.getEmail() != null) {
-      existingUser.setEmail(user.getEmail());
-    }
-
-    if (user.getRole() != null) {
-      existingUser.setRole(user.getRole());
-    }
-    return userRepository.save(existingUser);
-  }
-
-  @DeleteMapping("/{id}")
-  public String deleteUser(@PathVariable Long id) {
-    try {
-      userRepository.findById(id).get();
-      userRepository.deleteById(id);
-      return "User deleted successfully";
-    } catch (Exception e) {
-      return "User not found";
-    }
-  }
 }

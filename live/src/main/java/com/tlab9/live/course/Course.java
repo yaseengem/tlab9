@@ -26,8 +26,8 @@ public class Course {
     private String course_code;
 
     @Column(nullable = true, columnDefinition = "TEXT")
-    @Schema(description = "Description of the course", example = "This course covers the basics of programming.")
-    private String description;
+    @Schema(description = "Introduction of the course", example = "This course covers the basics of programming.")
+    private String intro;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     @Schema(description = "Creator of the course", example = "John Doe")

@@ -3,133 +3,67 @@ package com.tlab9.live.unit;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
 @Entity
 @Table(name = "units")
+@Schema(description = "Unit entity representing a unit in the system")
+@Data
 public class Unit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "unit_id")
+    @Schema(description = "Unique identifier of the unit", example = "1")
     private Long unit_id;
 
-    @Column(name = "unit_name", nullable = true, length = 255)
+    @Column(nullable = true, length = 255)
+    @Schema(description = "Name of the unit", example = "Unit 1")
     private String unit_name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    @Schema(description = "Introduction of the unit", example = "This unit covers the basics of the topic.")
+    private String intro;
 
-    @Column(name = "sequence_no", nullable = true)
-    private Integer sequence_no;
+    @Column
+    @Schema(description = "Sequence number of the unit", example = "1")
+    private Integer seq_no;
 
-    @Column(name = "created_at")
+    @Column(nullable = true)
+    @Schema(description = "Creation timestamp of the unit")
     private LocalDateTime created_at;
 
-    @Column(name = "updated_at")
+    @Column(nullable = true)
+    @Schema(description = "Last update timestamp of the unit")
     private LocalDateTime updated_at;
 
-    @Column(name = "created_by")
+    @Column(nullable = true, columnDefinition = "TEXT")
+    @Schema(description = "Creator of the unit", example = "Admin")
     private String created_by;
 
-    @Column(name = "head_video_url", length = 255)
+    @Column(length = 255)
+    @Schema(description = "URL of the head video for the unit", example = "http://example.com/unit1.mp4")
     private String head_video_url;
 
-    @Column(name = "head_image_url", length = 255)
+    @Column(length = 255)
+    @Schema(description = "URL of the head image for the unit", example = "http://example.com/unit1.jpg")
     private String head_image_url;
 
-    @Column(name = "module_id")
+    @Column
+    @Schema(description = "Identifier of the module associated with the unit", example = "1")
     private Long module_id;
 
-    @Column(name = "unit_code", nullable = true, length = 50)
+    @Column(nullable = true, length = 50)
+    @Schema(description = "Code of the unit", example = "U001")
     private String unit_code;
 
-    // Getters and setters
-    public Long getUnit_id() {
-        return unit_id;
-    }
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Schema(description = "Indicates if the unit is active", example = "false")
+    private boolean is_active;
 
-    public void setUnit_id(Long unit_id) {
-        this.unit_id = unit_id;
-    }
-
-    public String getUnit_name() {
-        return unit_name;
-    }
-
-    public void setUnit_name(String unit_name) {
-        this.unit_name = unit_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getSequence_no() {
-        return sequence_no;
-    }
-
-    public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-    public String getHead_video_url() {
-        return head_video_url;
-    }
-
-    public void setHead_video_url(String head_video_url) {
-        this.head_video_url = head_video_url;
-    }
-
-    public String getHead_image_url() {
-        return head_image_url;
-    }
-
-    public void setHead_image_url(String head_image_url) {
-        this.head_image_url = head_image_url;
-    }
-
-    public Long getModule_id() {
-        return module_id;
-    }
-
-    public void setModule_id(Long module_id) {
-        this.module_id = module_id;
-    }
-
-    public String getUnit_code() {
-        return unit_code;
-    }
-
-    public void setUnit_code(String unit_code) {
-        this.unit_code = unit_code;
-    }
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Schema(description = "Indicates if the unit is deleted", example = "false")
+    private boolean is_deleted;
 
     @PrePersist
     protected void onCreate() {

@@ -3,133 +3,67 @@ package com.tlab9.live.module;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
 @Entity
 @Table(name = "modules")
+@Schema(description = "Module entity representing a module in the system")
+@Data
 public class Module {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "module_id")
+    @Schema(description = "Unique identifier of the module", example = "1")
     private Long module_id;
 
-    @Column(name = "module_name", nullable = true, length = 255)
+    @Column(nullable = true, length = 255)
+    @Schema(description = "Name of the module", example = "Introduction to Programming")
     private String module_name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    @Schema(description = "Introduction of the module", example = "This module covers the basics of programming.")
+    private String intro;
 
-    @Column(name = "sequence_no", nullable = true)
-    private Integer sequence_no;
+    @Column
+    @Schema(description = "Sequence number of the module", example = "1")
+    private Integer seq_no;
 
-    @Column(name = "created_at")
+    @Column(nullable = true)
+    @Schema(description = "Creation timestamp of the module")
     private LocalDateTime created_at;
 
-    @Column(name = "updated_at")
+    @Column(nullable = true)
+    @Schema(description = "Last update timestamp of the module")
     private LocalDateTime updated_at;
 
-    @Column(name = "created_by")
+    @Column(nullable = true, columnDefinition = "TEXT")
+    @Schema(description = "Creator of the module", example = "Jane Doe")
     private String created_by;
 
-    @Column(name = "head_video_url", length = 255)
+    @Column(length = 255)
+    @Schema(description = "URL of the head video for the module", example = "http://example.com/video.mp4")
     private String head_video_url;
 
-    @Column(name = "head_image_url", length = 255)
+    @Column(length = 255)
+    @Schema(description = "URL of the head image for the module", example = "http://example.com/image.jpg")
     private String head_image_url;
 
-    @Column(name = "subject_id")
+    @Column
+    @Schema(description = "Identifier of the subject associated with the module", example = "1")
     private Long subject_id;
 
-    @Column(name = "module_code", nullable = true, length = 50)
+    @Column(nullable = true, length = 50)
+    @Schema(description = "Code of the module", example = "CS101")
     private String module_code;
 
-    // Getters and setters
-    public Long getModule_id() {
-        return module_id;
-    }
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Schema(description = "Indicates if the module is active", example = "false")
+    private boolean is_active;
 
-    public void setModule_id(Long module_id) {
-        this.module_id = module_id;
-    }
-
-    public String getModule_name() {
-        return module_name;
-    }
-
-    public void setModule_name(String module_name) {
-        this.module_name = module_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getSequence_no() {
-        return sequence_no;
-    }
-
-    public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-    public String getHead_video_url() {
-        return head_video_url;
-    }
-
-    public void setHead_video_url(String head_video_url) {
-        this.head_video_url = head_video_url;
-    }
-
-    public String getHead_image_url() {
-        return head_image_url;
-    }
-
-    public void setHead_image_url(String head_image_url) {
-        this.head_image_url = head_image_url;
-    }
-
-    public Long getSubject_id() {
-        return subject_id;
-    }
-
-    public void setSubject_id(Long subject_id) {
-        this.subject_id = subject_id;
-    }
-
-    public String getModule_code() {
-        return module_code;
-    }
-
-    public void setModule_code(String module_code) {
-        this.module_code = module_code;
-    }
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Schema(description = "Indicates if the module is deleted", example = "false")
+    private boolean is_deleted;
 
     @PrePersist
     protected void onCreate() {

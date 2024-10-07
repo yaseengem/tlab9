@@ -3,133 +3,67 @@ package com.tlab9.live.subject;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
 @Entity
 @Table(name = "subjects")
+@Schema(description = "Subject entity representing a subject in the system")
+@Data
 public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subject_id")
+    @Schema(description = "Unique identifier of the subject", example = "1")
     private Long subject_id;
 
-    @Column(name = "subject_name", nullable = true, length = 255)
+    @Column(nullable = true, length = 255)
+    @Schema(description = "Name of the subject", example = "Mathematics")
     private String subject_name;
 
-    @Column(name = "description")
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    @Schema(description = "Introduction of the subject", example = "This subject covers basic to advanced mathematics.")
+    private String intro;
 
-    @Column(name = "sequence_no")
-    private Integer sequence_no;
+    @Column
+    @Schema(description = "Sequence number of the subject", example = "1")
+    private Integer seq_no;
 
-    @Column(name = "created_at")
+    @Column(nullable = true)
+    @Schema(description = "Creation timestamp of the subject")
     private LocalDateTime created_at;
 
-    @Column(name = "updated_at")
+    @Column(nullable = true)
+    @Schema(description = "Last update timestamp of the subject")
     private LocalDateTime updated_at;
 
-    @Column(name = "created_by")
+    @Column(nullable = true, columnDefinition = "TEXT")
+    @Schema(description = "Creator of the subject", example = "Jane Doe")
     private String created_by;
 
-    @Column(name = "head_video_url", length = 255)
+    @Column(length = 255)
+    @Schema(description = "URL of the head video for the subject", example = "http://example.com/video.mp4")
     private String head_video_url;
 
-    @Column(name = "head_image_url", length = 255)
+    @Column(length = 255)
+    @Schema(description = "URL of the head image for the subject", example = "http://example.com/image.jpg")
     private String head_image_url;
 
-    @Column(name = "course_id")
+    @Column
+    @Schema(description = "Identifier of the course associated with the subject", example = "1")
     private Long course_id;
 
-    @Column(name = "subject_code", nullable = true, length = 50)
+    @Column(nullable = true, length = 50)
+    @Schema(description = "Code of the subject", example = "MATH101")
     private String subject_code;
 
-    // Getters and setters
-    public Long getSubject_id() {
-        return subject_id;
-    }
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Schema(description = "Indicates if the subject is active", example = "false")
+    private boolean is_active;
 
-    public void setSubject_id(Long subject_id) {
-        this.subject_id = subject_id;
-    }
-
-    public String getSubject_name() {
-        return subject_name;
-    }
-
-    public void setSubject_name(String subject_name) {
-        this.subject_name = subject_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getSequence_no() {
-        return sequence_no;
-    }
-
-    public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
-    }
-
-    public String getHead_video_url() {
-        return head_video_url;
-    }
-
-    public void setHead_video_url(String head_video_url) {
-        this.head_video_url = head_video_url;
-    }
-
-    public String getHead_image_url() {
-        return head_image_url;
-    }
-
-    public void setHead_image_url(String head_image_url) {
-        this.head_image_url = head_image_url;
-    }
-
-    public Long getCourse_id() {
-        return course_id;
-    }
-
-    public void setCourse_id(Long course_id) {
-        this.course_id = course_id;
-    }
-
-    public String getSubject_code() {
-        return subject_code;
-    }
-
-    public void setSubject_code(String subject_code) {
-        this.subject_code = subject_code;
-    }
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Schema(description = "Indicates if the subject is deleted", example = "false")
+    private boolean is_deleted;
 
     @PrePersist
     protected void onCreate() {
