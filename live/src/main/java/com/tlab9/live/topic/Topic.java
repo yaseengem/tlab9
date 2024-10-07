@@ -21,8 +21,8 @@ public class Topic {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    private String intro;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -32,8 +32,8 @@ public class Topic {
 
     @Column(name = "topic_code", nullable = true, length = 50)
     private String topic_code;
-    @Column(name = "sequence_no", nullable = true)
-    private Integer sequence_no;
+    @Column(name = "seq_no", nullable = true)
+    private Integer seq_no;
 
     @Column(name = "created_by")
     private String created_by;
@@ -80,12 +80,12 @@ public class Topic {
         this.content = content;
     }
 
-    public String getDescription() {
-        return description;
+    public String getIntro() {
+        return intro;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public LocalDateTime getCreated_at() {
@@ -113,11 +113,11 @@ public class Topic {
     }
 
     public Integer getSequence_no() {
-        return sequence_no;
+        return seq_no;
     }
 
     public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
+        this.seq_no = sequence_no;
     }
 
     public String getCreated_by() {

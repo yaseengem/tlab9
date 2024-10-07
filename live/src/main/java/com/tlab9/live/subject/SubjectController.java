@@ -87,7 +87,7 @@ public class SubjectController {
         } else {
             spec = (root, query, cb) -> cb.or(
                     cb.like(cb.lower(root.get("subject_name")), "%" + searchTerm.toLowerCase() + "%"),
-                    cb.like(cb.lower(root.get("description")), "%" + searchTerm.toLowerCase() + "%")
+                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%")
             );
         }
 

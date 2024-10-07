@@ -15,11 +15,11 @@ public class Subject {
     @Column(name = "subject_name", nullable = true, length = 255)
     private String subject_name;
 
-    @Column(name = "description")
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    private String intro;
 
-    @Column(name = "sequence_no")
-    private Integer sequence_no;
+    @Column(name = "seq_no")
+    private Integer seq_no;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -59,20 +59,20 @@ public class Subject {
         this.subject_name = subject_name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getIntro() {
+        return intro;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public Integer getSequence_no() {
-        return sequence_no;
+        return seq_no;
     }
 
     public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
+        this.seq_no = sequence_no;
     }
 
     public LocalDateTime getCreated_at() {

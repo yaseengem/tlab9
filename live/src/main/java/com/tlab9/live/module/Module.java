@@ -15,11 +15,11 @@ public class Module {
     @Column(name = "module_name", nullable = true, length = 255)
     private String module_name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    @Column(columnDefinition = "TEXT")
+    private String intro;
 
-    @Column(name = "sequence_no", nullable = true)
-    private Integer sequence_no;
+    @Column(name = "seq_no", nullable = true)
+    private Integer seq_no;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -59,20 +59,20 @@ public class Module {
         this.module_name = module_name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getIntro() {
+        return intro;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public Integer getSequence_no() {
-        return sequence_no;
+        return seq_no;
     }
 
     public void setSequence_no(Integer sequence_no) {
-        this.sequence_no = sequence_no;
+        this.seq_no = sequence_no;
     }
 
     public LocalDateTime getCreated_at() {

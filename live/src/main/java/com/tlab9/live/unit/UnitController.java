@@ -86,7 +86,7 @@ public class UnitController {
         } else {
             spec = (root, query, cb) -> cb.or(
                     cb.like(cb.lower(root.get("unit_name")), "%" + searchTerm.toLowerCase() + "%"),
-                    cb.like(cb.lower(root.get("description")), "%" + searchTerm.toLowerCase() + "%")
+                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%")
             );
         }
 

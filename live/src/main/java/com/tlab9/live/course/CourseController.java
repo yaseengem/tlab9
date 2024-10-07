@@ -121,7 +121,7 @@ public class CourseController {
         } else {
             spec = (root, query, cb) -> cb.or(
                     cb.like(cb.lower(root.get("course_name")), "%" + searchTerm.toLowerCase() + "%"),
-                    cb.like(cb.lower(root.get("description")), "%" + searchTerm.toLowerCase() + "%")
+                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%")
             );
         }
 
