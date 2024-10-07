@@ -37,8 +37,8 @@ public class UserController {
   @PutMapping("/{id}")
   public User updateUser(@PathVariable Long id, @RequestBody User user) {
     User existingUser = userRepository.findById(id).get();
-    if (user.getName() != null) {
-      existingUser.setName(user.getName());
+    if (user.getUser_name() != null) {
+      existingUser.setUser_name(user.getUser_name());
     }
 
     if (user.getEmail() != null) {
