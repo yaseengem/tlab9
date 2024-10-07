@@ -20,6 +20,7 @@ public class TopicController {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Operation(summary = "Get all topics")
     @GetMapping
     public List<Topic> getAllTopics() {
         log.info("Entering getAllTopics method");
@@ -29,6 +30,7 @@ public class TopicController {
         return topics;
     }
 
+    @Operation(summary = "Get a topic by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Topic> getTopicById(@PathVariable Long id) {
         log.info("Entering getTopicById method with id: {}", id);
@@ -45,6 +47,7 @@ public class TopicController {
         return response;
     }
 
+    @Operation(summary = "Create a new topic")
     @PostMapping
     public Topic createTopic(@RequestBody Topic topic) {
         log.info("Entering createTopic method with topic: {}", topic);
@@ -54,6 +57,7 @@ public class TopicController {
         return createdTopic;
     }
 
+    @Operation(summary = "Update a topic by ID")
     @PutMapping("/{id}")
     public ResponseEntity<Topic> updateTopic(@PathVariable Long id, @RequestBody Topic topicDetails) {
         log.info("Entering updateTopic method with id: {} and topicDetails: {}", id, topicDetails);
@@ -73,6 +77,7 @@ public class TopicController {
         return response;
     }
 
+    @Operation(summary = "Delete a topic by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTopic(@PathVariable Long id) {
         log.info("Entering deleteTopic method with id: {}", id);

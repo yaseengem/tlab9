@@ -75,6 +75,7 @@ public class SubjectController {
                 });
     }
 
+    @Operation(summary = "Delete a subject by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSubject(@PathVariable Long id) {
         log.info("Entering deleteSubject method with id: {}", id);
@@ -112,7 +113,6 @@ public class SubjectController {
         }
         log.info("Exiting updateFields method");
     }
-
 
     @Operation(summary = "Search for the subjects based on a field and search term")
     @PostMapping("/search")

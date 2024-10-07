@@ -13,6 +13,7 @@ INSERT INTO courses (course_name, course_code, intro, created_by, created_at, he
 ('Course 4', 'C004', 'Introduction for Course 4', 'Admin', '2023-01-04 13:00:00', 'http://example.com/course4.jpg', 'http://example.com/course4.mp4'),
 ('Course 5', 'C005', 'Introduction for Course 5', 'Admin', '2023-01-05 14:00:00', 'http://example.com/course5.jpg', 'http://example.com/course5.mp4');
 
+
 -- Insert data into subjects table
 INSERT INTO subjects (subject_name, subject_code, intro, created_by, created_at, head_image_url, head_video_url, course_id, seq_no) VALUES
 ('Subject 1', 'S001', 'Introduction for Subject 1', 'Admin', '2023-01-01 10:30:00', 'http://example.com/subject1.jpg', 'http://example.com/subject1.mp4', 1, 1),
@@ -26,7 +27,8 @@ INSERT INTO modules (module_name, module_code, intro, created_by, created_at, he
 ('Module 1', 'M001', 'Introduction for Module 1', 'Admin', '2023-01-01 10:45:00', 'http://example.com/module1.jpg', 'http://example.com/module1.mp4', 1, 1),
 ('Module 2', 'M002', 'Introduction for Module 2', 'Admin', '2023-01-01 11:15:00', 'http://example.com/module2.jpg', 'http://example.com/module2.mp4', 1, 2),
 ('Module 3', 'M003', 'Introduction for Module 3', 'Admin', '2023-01-02 11:45:00', 'http://example.com/module3.jpg', 'http://example.com/module3.mp4', 2, 1),
-('Module 4', 'M004', 'Introduction for Module 4', 'Admin', '2023-01-02 12:15:00', 'http://example.com/module4.jpg', 'http://example.com/module4.mp4', 2, 2);
+('Module 4', 'M004', 'Introduction for Module 4', 'Admin', '2023-01-02 12:15:00', 'http://example.com/module4.jpg', 'http://example.com/module4.mp4', 2, 2),
+('Module 5', 'M005', 'Introduction for Module 5', 'Admin', '2023-01-03 12:30:00', 'http://example.com/module5.jpg', 'http://example.com/module5.mp4', 3, 1);
 
 -- Insert data into units table
 INSERT INTO units (unit_name, unit_code, intro, created_by, created_at, head_image_url, head_video_url, module_id, seq_no) VALUES
@@ -43,3 +45,10 @@ INSERT INTO topics (topic_name, topic_code, intro, content, head_image_url, head
 ('Topic 3', 'T003', 'Introduction for Topic 3', 'Content for Topic 3', 'http://example.com/topic3.jpg', 'http://example.com/topic3.mp4', 'Admin', '2023-01-02 12:15:00', '2023-01-02 12:20:00', 3, 'Type3', 2),
 ('Topic 4', 'T004', 'Introduction for Topic 4', 'Content for Topic 4', 'http://example.com/topic4.jpg', 'http://example.com/topic4.mp4', 'Admin', '2023-01-02 12:45:00', '2023-01-02 12:50:00', 4, 'Type4', 2),
 ('Topic 5', 'T005', 'Introduction for Topic 5', 'Content for Topic 5', 'http://example.com/topic5.jpg', 'http://example.com/topic5.mp4', 'Admin', '2023-01-03 13:15:00', '2023-01-03 13:20:00', 5, 'Type5', 3);
+
+
+-- Insert data into users table
+INSERT INTO users (email, user_name, role, created_at) VALUES
+('yaseengem@gmail.com', 'Yaseen Gem', 'User', '2023-01-01 10:00:00'),
+('zaidyaseenhyd2@gmail.com', 'Zaid Yaseen', 'User', '2023-01-02 11:00:00'),
+('asiayaseentech@gmail.com', 'Asia Yaseen', 'User', '2023-01-03 12:00:00');

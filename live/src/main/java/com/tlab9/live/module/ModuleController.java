@@ -76,6 +76,7 @@ public class ModuleController {
         return createdModule;
     }
 
+    @Operation(summary = "Update a module by ID")
     @PutMapping("/{id}")
     public ResponseEntity<Module> updateModule(@PathVariable Long id, @RequestBody Module moduleDetails) {
         log.info("Entering updateModule method with id: {} and moduleDetails: {}", id, moduleDetails);
@@ -95,6 +96,7 @@ public class ModuleController {
         return response;
     }
 
+    @Operation(summary = "Delete a module by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteModule(@PathVariable Long id) {
         log.info("Entering deleteModule method with id: {}", id);

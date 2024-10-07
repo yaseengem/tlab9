@@ -20,6 +20,7 @@ public class UnitController {
     @Autowired
     private UnitRepository unitRepository;
 
+    @Operation(summary = "Get all units")
     @GetMapping
     public List<Unit> getAllUnits() {
         log.info("Entering getAllUnits method");
@@ -29,6 +30,7 @@ public class UnitController {
         return units;
     }
 
+    @Operation(summary = "Get a unit by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Unit> getUnitById(@PathVariable Long id) {
         log.info("Entering getUnitById method with id: {}", id);
@@ -45,6 +47,7 @@ public class UnitController {
         return response;
     }
 
+    @Operation(summary = "Create a new unit")
     @PostMapping
     public Unit createUnit(@RequestBody Unit unit) {
         log.info("Entering createUnit method with unit: {}", unit);
@@ -54,6 +57,7 @@ public class UnitController {
         return createdUnit;
     }
 
+    @Operation(summary = "Update a unit by ID")
     @PutMapping("/{id}")
     public ResponseEntity<Unit> updateUnit(@PathVariable Long id, @RequestBody Unit unitDetails) {
         log.info("Entering updateUnit method with id: {} and unitDetails: {}", id, unitDetails);
@@ -73,6 +77,7 @@ public class UnitController {
         return response;
     }
 
+    @Operation(summary = "Delete a unit by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUnit(@PathVariable Long id) {
         log.info("Entering deleteUnit method with id: {}", id);
@@ -111,7 +116,6 @@ public class UnitController {
         log.info("Exiting updateFields method");
     }
 
-
     @Operation(summary = "Search for the units based on a field and search term")
     @PostMapping("/search")
     public List<Unit> searchUnits(@RequestBody Map<String, String> searchParams) {
@@ -128,10 +132,8 @@ public class UnitController {
             log.info("Searching units by default fields with searchTerm: {}", searchTerm);
             spec = (root, query, cb) -> cb.or(
                     cb.like(cb.lower(root.get("unit_name")), "%" + searchTerm.toLowerCase() + "%"),
-                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%")
-            );
+                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%"));
         }
-
         List<Unit> units = unitRepository.findAll(spec);
         log.info("Successfully found {} units", units.size());
         log.info("Exiting searchUnits method");
