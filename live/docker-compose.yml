@@ -14,6 +14,8 @@ services:
       - ./var.env
     depends_on:
       - track_db
+    volumes:
+      - ./app/files:/files
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s

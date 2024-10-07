@@ -114,8 +114,16 @@ public class CourseController {
         String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
-        Specification<Course> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)),
-                "%" + searchTerm.toLowerCase() + "%");
+        Specification<Course> spec;
+        if (field != null && !field.isEmpty()) {
+            spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)),
+                    "%" + searchTerm.toLowerCase() + "%");
+        } else {
+            spec = (root, query, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("course_name")), "%" + searchTerm.toLowerCase() + "%"),
+                    cb.like(cb.lower(root.get("description")), "%" + searchTerm.toLowerCase() + "%")
+            );
+        }
 
         List<Course> courses = courseRepository.findAll(spec);
         log.info("Exiting searchCourses method with courses: {}", courses);

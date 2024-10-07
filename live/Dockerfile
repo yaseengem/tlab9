@@ -1,5 +1,9 @@
 FROM openjdk:17-jdk-alpine
 
+
+# Create upload directory
+RUN mkdir -p /files
+
 # Copy the keystore file
 COPY /cert/keystore.p12 keystore.p12
 

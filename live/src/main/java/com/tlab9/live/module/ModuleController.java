@@ -5,6 +5,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +73,25 @@ public class ModuleController {
         }
     }
 
+
+    @Operation(summary = "Search for the modules based on a field and search term")
     @PostMapping("/search")
     public List<Module> searchModules(@RequestBody Map<String, String> searchParams) {
         String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
-        Specification<Module> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + searchTerm.toLowerCase() + "%");
+        Specification<Module> spec;
+        if (field != null && !field.isEmpty()) {
+            spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)),
+                    "%" + searchTerm.toLowerCase() + "%");
+        } else {
+            spec = (root, query, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("module_name")), "%" + searchTerm.toLowerCase() + "%"),
+                    cb.like(cb.lower(root.get("description")), "%" + searchTerm.toLowerCase() + "%")
+            );
+        }
 
-        return moduleRepository.findAll(spec);
+        List<Module> modules = moduleRepository.findAll(spec);
+        return modules;
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +73,24 @@ public class UnitController {
         }
     }
 
+    @Operation(summary = "Search for the units based on a field and search term")
     @PostMapping("/search")
     public List<Unit> searchUnits(@RequestBody Map<String, String> searchParams) {
         String field = searchParams.get("field");
         String searchTerm = searchParams.get("searchTerm");
 
-        Specification<Unit> spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + searchTerm.toLowerCase() + "%");
+        Specification<Unit> spec;
+        if (field != null && !field.isEmpty()) {
+            spec = (root, query, cb) -> cb.like(cb.lower(root.get(field)),
+                    "%" + searchTerm.toLowerCase() + "%");
+        } else {
+            spec = (root, query, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("unit_name")), "%" + searchTerm.toLowerCase() + "%"),
+                    cb.like(cb.lower(root.get("description")), "%" + searchTerm.toLowerCase() + "%")
+            );
+        }
 
-        return unitRepository.findAll(spec);
+        List<Unit> units = unitRepository.findAll(spec);
+        return units;
     }
 }
