@@ -29,7 +29,7 @@ export PATH=$MAVEN_HOME/bin:$PATH
 # Remove the existing volume if in dev environment
 if [ "$ENV" = "dev" ]; then
   echo "Stopping and removing containers..."
-  docker-compose down
+  docker compose down
   echo "Removing existing pgdata volume..."
   docker volume ls
   docker volume rm -f live_pgdata
