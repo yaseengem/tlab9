@@ -17,7 +17,7 @@ public class User {
     @Schema(description = "Unique identifier of the user", example = "1")
     private Long user_id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     @Schema(description = "Name of the user", example = "John Doe")
     private String user_name;
 
@@ -25,7 +25,7 @@ public class User {
     @Schema(description = "Email of the user", example = "john.doe@example.com")
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = true, length = 50)
     @Schema(description = "Role of the user", example = "Admin")
     private String role;
 
