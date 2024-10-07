@@ -25,7 +25,13 @@ public class CourseController {
     @GetMapping
     public List<Course> getAllCourses() {
         log.info("Entering getAllCourses method");
-        List<Course> courses = courseRepository.findAll();
+        List<Course> courses = null;
+        try {
+            courses = courseRepository.findAll();
+            log.info("Successfully retrieved all courses");
+        } catch (Exception e) {
+            log.error("Error occurred while retrieving courses: ", e);
+        }
         log.info("Exiting getAllCourses method");
         return courses;
     }
@@ -58,7 +64,7 @@ public class CourseController {
                 .map(existingCourse -> {
                     updateFields(existingCourse, courseDetails);
                     Course updatedCourse = courseRepository.save(existingCourse);
-                    log.info("Exiting updateCourse method with updated course: {}", updatedCourse);
+                    log.info("Successfully updated course with id: {}", id);
                     return ResponseEntity.ok(updatedCourse);
                 })
                 .orElseGet(() -> {
@@ -69,7 +75,7 @@ public class CourseController {
         return response;
     }
 
-    @Operation(summary = "Delete an existing course")
+    @Operation(summary = "Delete a course")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         log.info("Entering deleteCourse method with id: {}", id);
@@ -88,7 +94,8 @@ public class CourseController {
     }
 
     private void updateFields(Course existingCourse, Course courseDetails) {
-        log.info("Entering updateFields method with existingCourse: {} and courseDetails: {}", existingCourse, courseDetails);
+        log.info("Entering updateFields method with existingCourse: {} and courseDetails: {}", existingCourse,
+                courseDetails);
         Field[] fields = Course.class.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
@@ -121,8 +128,7 @@ public class CourseController {
         } else {
             spec = (root, query, cb) -> cb.or(
                     cb.like(cb.lower(root.get("course_name")), "%" + searchTerm.toLowerCase() + "%"),
-                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%")
-            );
+                    cb.like(cb.lower(root.get("intro")), "%" + searchTerm.toLowerCase() + "%"));
         }
 
         List<Course> courses = courseRepository.findAll(spec);
