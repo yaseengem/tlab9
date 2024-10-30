@@ -16,8 +16,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.UUID;
-
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,27 +30,32 @@ public class FileController {
     private static final String UPLOAD_DIR = "/files";
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "File is empty"));
         }
 
         try {
             String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+            // Print the file name
+            System.out.println("Uploading file: " + originalFilename);
+
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
-            
-            String newFilename = timestamp + fileExtension;
+            // Change the new filename format to timestamp-filename.ext
+            String newFilename = timestamp + "-" + originalFilename;
             Path uploadPath = Paths.get(UPLOAD_DIR, newFilename);
 
             Files.createDirectories(uploadPath.getParent());
             Files.copy(file.getInputStream(), uploadPath);
 
-            return ResponseEntity.ok("File uploaded successfully: " + newFilename);
+            String fileUrl = newFilename; // Adjust the URL as needed
+            return ResponseEntity.ok(Map.of("url", fileUrl));
         } catch (IOException e) {
             logger.error("Error uploading file", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error uploading file"));
         }
     }
 
@@ -61,14 +66,14 @@ public class FileController {
             if (!Files.exists(filePath)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
-    
+
             byte[] fileContent = Files.readAllBytes(filePath);
             String contentType = Files.probeContentType(filePath);
-    
+
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
             headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-    
+
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(fileContent);
