@@ -1,6 +1,10 @@
 
+
+
 #!/bin/bash
-# run this file using "sudo ./run.sh"
+
+# Run this file using "sudo ./run.sh"
+# This script is used to build and run the application in a Docker container.
 
 # remove all existing containers
 # sudo docker stop $(sudo docker ps -q)

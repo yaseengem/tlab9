@@ -33,6 +33,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000"); // Adjust the port if necessary
+        config.addAllowedOrigin("http://localhost:8081"); // Adjust the port if necessary
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
