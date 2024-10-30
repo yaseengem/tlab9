@@ -38,6 +38,10 @@ public class User {
     private String intro;
 
     @Column(nullable = true)
+    @Schema(description = "Profile of the User", example = "Detailed Profile of the user goes here.")
+    private String content;
+
+    @Column(nullable = true)
     @Schema(description = "Creation timestamp of the user")
     private LocalDateTime created_at;
 

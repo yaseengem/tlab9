@@ -25,11 +25,16 @@ public class Course {
     @Schema(description = "Code of the course", example = "CS101")
     private String course_code;
 
-    @Column(nullable = true, columnDefinition = "TEXT")
+    @Column(nullable = true)
     @Schema(description = "Introduction of the course", example = "This course covers the basics of programming.")
     private String intro;
 
-    @Column(nullable = true, columnDefinition = "TEXT")
+    @Column(nullable = true)
+    @Schema(description = "Content of the course", example = "Detailed content of the course goes here.")
+    private String content;
+
+    
+    @Column(nullable = true)
     @Schema(description = "Creator of the course", example = "John Doe")
     private String created_by;
 
@@ -49,11 +54,11 @@ public class Course {
     @Schema(description = "Indicates if the course is deleted", example = "false")
     private boolean is_deleted;
 
-    @Column(name = "head_video_url", length = 255)
+    @Column(name = "head_video_url")
     @Schema(description = "URL of the head video for the course", example = "http://example.com/video.mp4")
     private String head_video_url;
 
-    @Column(name = "head_image_url", length = 255)
+    @Column(name = "head_image_url")
     @Schema(description = "URL of the head image for the course", example = "http://example.com/image.jpg")
     private String head_image_url;
 

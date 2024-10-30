@@ -17,15 +17,19 @@ public class Module {
     @Schema(description = "Unique identifier of the module", example = "1")
     private Long module_id;
 
-    @Column(nullable = true, length = 255)
+    @Column(nullable = true)
     @Schema(description = "Name of the module", example = "Introduction to Programming")
     private String module_name;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = true)
     @Schema(description = "Introduction of the module", example = "This module covers the basics of programming.")
     private String intro;
 
-    @Column
+    @Column(nullable = true)
+    @Schema(description = "Content of the course", example = "Detailed content of the course goes here.")
+    private String content;
+
+    @Column(nullable = true)
     @Schema(description = "Sequence number of the module", example = "1")
     private Integer seq_no;
 
@@ -37,7 +41,7 @@ public class Module {
     @Schema(description = "Last update timestamp of the module")
     private LocalDateTime updated_at;
 
-    @Column(nullable = true, columnDefinition = "TEXT")
+    @Column(nullable = true)
     @Schema(description = "Creator of the module", example = "Jane Doe")
     private String created_by;
 
