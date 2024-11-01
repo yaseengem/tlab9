@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/courses")
+@RequestMapping("/api/course")
 @Tag(name = "Course", description = "API for managing courses")
 @Slf4j
 public class CourseController {

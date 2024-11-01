@@ -50,6 +50,10 @@ public class FileController {
             Files.createDirectories(uploadPath.getParent());
             Files.copy(file.getInputStream(), uploadPath);
 
+            // Log the successful upload
+            logger.info("File uploaded successfully: " + newFilename);
+
+
             String fileUrl = newFilename; // Adjust the URL as needed
             return ResponseEntity.ok(Map.of("url", fileUrl));
         } catch (IOException e) {

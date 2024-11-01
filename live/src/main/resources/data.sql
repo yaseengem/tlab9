@@ -11,7 +11,7 @@ INSERT INTO courses (course_name, course_code, intro, created_by, created_at, he
 ('Course 2', 'C002', 'Introduction for Course 2', 'Admin', '2023-01-02 11:00:00', 'http://example.com/course2.jpg', 'http://example.com/course2.mp4'),
 ('Course 3', 'C003', 'Introduction for Course 3', 'Admin', '2023-01-03 12:00:00', 'http://example.com/course3.jpg', 'http://example.com/course3.mp4'),
 ('Course 4', 'C004', 'Introduction for Course 4', 'Admin', '2023-01-04 13:00:00', 'http://example.com/course4.jpg', 'http://example.com/course4.mp4'),
-('Course 5', 'C005', 'Introduction for Course 5', 'Admin', '2023-01-05 14:00:00', 'http://example.com/course5.jpg', 'http://example.com/course5.mp4');
+('Course 5', 'C005', 'Introduction for Course 5', 'Admin', '2023-01-05 14:00:00', '20241101144706-photo_1730472426014.png', 'https://www.youtube.com/embed/yykrqa_6-Ek');
 
 
 -- Insert data into subjects table
