@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/subjects")
+@RequestMapping("/api/subject")
 @Tag(name = "Subject", description = "API for managing subjects")
 @Slf4j
 public class SubjectController {

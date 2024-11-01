@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/units")
+@RequestMapping("/api/unit")
 @Slf4j
 public class UnitController {
 

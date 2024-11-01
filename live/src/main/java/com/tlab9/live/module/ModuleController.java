@@ -15,7 +15,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/api/modules")
+@RequestMapping("/api/module")
 @Tag(name = "Module", description = "API for managing modules")
 @Slf4j
 public class ModuleController {
