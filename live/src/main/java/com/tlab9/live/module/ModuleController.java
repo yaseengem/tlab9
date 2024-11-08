@@ -2,9 +2,9 @@ package com.tlab9.live.module;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -159,6 +159,45 @@ public class ModuleController {
         log.info("Successfully found {} modules", modules.size());
         log.info("Exiting searchModules method");
         return modules;
+    }
+
+    @Operation(summary = "Get modules by subject ID")
+    @GetMapping("/bysubjectid/{subject_id}")
+    public List<Module> getModulesBySubjectId(@PathVariable("subject_id") String subjectId) {
+        log.info("Entering getModulesBySubjectId method with subject_id: {}", subjectId);
+
+        Specification<Module> spec = (root, query, cb) -> cb.equal(root.get("subject_id"), subjectId);
+
+        List<Module> modules = moduleRepository.findAll(spec);
+        log.info("Exiting getModulesBySubjectId method with modules: {}", modules);
+
+        return modules;
+    }
+
+    @Operation(summary = "Update modules list in the subject")
+    @PostMapping("/updateseqno")
+    public ResponseEntity<String> updateSequenceNumbers(@RequestBody List<Module> modules) {
+        log.info("Entering updateSequenceNumbers method with modules: {}", modules);
+
+        for (Module module : modules) {
+            Module existingModule = moduleRepository.findById(module.getModule_id())
+                    .orElseGet(() -> {
+                        log.warn("Module not found with id " + module.getModule_id());
+                        return null;
+                    });
+
+            if (existingModule == null) {
+                String errorMessage = "Module not found with id " + module.getModule_id();
+                log.error(errorMessage);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+
+            existingModule.setSeq_no(module.getSeq_no());
+            moduleRepository.save(existingModule);
+        }
+
+        log.info("Exiting updateSequenceNumbers method");
+        return ResponseEntity.ok("Sequence numbers updated successfully");
     }
 
 }

@@ -2,6 +2,7 @@ package com.tlab9.live.topic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -140,5 +141,44 @@ public class TopicController {
         log.info("Successfully found {} topics", topics.size());
         log.info("Exiting searchTopics method");
         return topics;
+    }
+
+    @Operation(summary = "Get units by topic ID")
+    @GetMapping("/byunitid/{unit_id}")
+    public List<Topic> getUnitsByTopicId(@PathVariable("unit_id") String unitId) {
+        log.info("Entering getUnitsByTopicId method with unit_id: {}", unitId);
+
+        Specification<Topic> spec = (root, query, cb) -> cb.equal(root.get("unit_id"), unitId);
+
+        List<Topic> topics = topicRepository.findAll(spec);
+        log.info("Exiting getUnitsByTopicId method with topics: {}", topics);
+
+        return topics;
+    }
+
+    @Operation(summary = "Update units list in the topic")
+    @PostMapping("/updateseqno")
+    public ResponseEntity<String> updateSequenceNumbers(@RequestBody List<Topic> topics) {
+        log.info("Entering updateSequenceNumbers method with topics: {}", topics);
+
+        for (Topic topic : topics) {
+            Topic existingTopic = topicRepository.findById(topic.getTopic_id())
+                    .orElseGet(() -> {
+                        log.warn("Topic not found with id " + topic.getTopic_id());
+                        return null;
+                    });
+
+            if (existingTopic == null) {
+                String errorMessage = "Topic not found with id " + topic.getTopic_id();
+                log.error(errorMessage);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+
+            existingTopic.setSeq_no(topic.getSeq_no());
+            topicRepository.save(existingTopic);
+        }
+
+        log.info("Exiting updateSequenceNumbers method");
+        return ResponseEntity.ok("Sequence numbers updated successfully");
     }
 }

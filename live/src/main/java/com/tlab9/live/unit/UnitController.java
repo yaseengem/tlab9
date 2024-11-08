@@ -2,6 +2,7 @@ package com.tlab9.live.unit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -138,5 +139,44 @@ public class UnitController {
         log.info("Successfully found {} units", units.size());
         log.info("Exiting searchUnits method");
         return units;
+    }
+
+    @Operation(summary = "Get modules by unit ID")
+    @GetMapping("/bymoduleid/{module_id}")
+    public List<Unit> getModulesByUnitId(@PathVariable("module_id") String moduleId) {
+        log.info("Entering getModulesByUnitId method with module_id: {}", moduleId);
+
+        Specification<Unit> spec = (root, query, cb) -> cb.equal(root.get("module_id"), moduleId);
+
+        List<Unit> units = unitRepository.findAll(spec);
+        log.info("Exiting getModulesByUnitId method with units: {}", units);
+
+        return units;
+    }
+
+    @Operation(summary = "Update modules list in the unit")
+    @PostMapping("/updateseqno")
+    public ResponseEntity<String> updateSequenceNumbers(@RequestBody List<Unit> units) {
+        log.info("Entering updateSequenceNumbers method with units: {}", units);
+
+        for (Unit unit : units) {
+            Unit existingUnit = unitRepository.findById(unit.getUnit_id())
+                    .orElseGet(() -> {
+                        log.warn("Unit not found with id " + unit.getUnit_id());
+                        return null;
+                    });
+
+            if (existingUnit == null) {
+                String errorMessage = "Unit not found with id " + unit.getUnit_id();
+                log.error(errorMessage);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+
+            existingUnit.setSeq_no(unit.getSeq_no());
+            unitRepository.save(existingUnit);
+        }
+
+        log.info("Exiting updateSequenceNumbers method");
+        return ResponseEntity.ok("Sequence numbers updated successfully");
     }
 }
