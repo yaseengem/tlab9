@@ -11,7 +11,7 @@ CREATE TABLE courses (
     is_deleted BOOLEAN DEFAULT FALSE NOT NULL,
     head_video_url VARCHAR(255),
     head_image_url VARCHAR(255),
-    stage DECIMAL(5, 5)
+    stage DECIMAL(10, 5)
 );
 
 -- Create users table
@@ -29,7 +29,7 @@ CREATE TABLE users (
     is_deleted BOOLEAN DEFAULT FALSE NOT NULL,
     head_video_url VARCHAR(255),
     head_image_url VARCHAR(255),
-    stage DECIMAL(5, 5)
+    stage DECIMAL(10, 5)
 );
 
 -- Create units table
@@ -48,7 +48,7 @@ CREATE TABLE units (
     head_image_url VARCHAR(255),
     module_id BIGINT,
     seq_no INTEGER,
-    stage DECIMAL(5, 5)
+    stage DECIMAL(10, 5)
 );
 
 -- Create topics table
@@ -68,7 +68,7 @@ CREATE TABLE topics (
     unit_id BIGINT,
     seq_no INTEGER,
     topic_type VARCHAR(50),
-    stage DECIMAL(5, 5)
+    stage DECIMAL(10, 5)
 );
 
 -- Create subjects table
@@ -87,7 +87,7 @@ CREATE TABLE subjects (
     head_image_url VARCHAR(255),
     course_id BIGINT,
     seq_no INTEGER,
-    stage DECIMAL(5, 5)
+    stage DECIMAL(10, 5)
 );
 
 -- Create modules table
@@ -106,5 +106,5 @@ CREATE TABLE modules (
     head_image_url VARCHAR(255),
     subject_id BIGINT,
     seq_no INTEGER,
-    stage DECIMAL(5, 5)
+    stage DECIMAL(10, 5)
 );
