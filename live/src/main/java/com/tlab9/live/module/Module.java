@@ -2,6 +2,7 @@ package com.tlab9.live.module;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -68,6 +69,10 @@ public class Module {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     @Schema(description = "Indicates if the module is deleted", example = "false")
     private boolean is_deleted;
+
+    @Column(nullable = true)
+    @Schema(description = "Stage of the module", example = "1.00000")
+    private BigDecimal stage;
 
     @PrePersist
     protected void onCreate() {

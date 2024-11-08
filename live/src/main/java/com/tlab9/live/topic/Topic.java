@@ -2,6 +2,7 @@ package com.tlab9.live.topic;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -64,6 +65,10 @@ public class Topic {
     @Column(nullable = true)
     @Schema(description = "Code of the topic", example = "JAVA101")
     private String topic_code;
+
+    @Column(nullable = true)
+    @Schema(description = "Stage of the topic", example = "1.00000")
+    private BigDecimal stage;
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     @Schema(description = "Indicates if the topic is active", example = "false")

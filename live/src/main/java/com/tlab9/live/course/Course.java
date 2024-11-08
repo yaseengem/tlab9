@@ -2,6 +2,7 @@ package com.tlab9.live.course;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -61,6 +62,10 @@ public class Course {
     @Column(name = "head_image_url")
     @Schema(description = "URL of the head image for the course", example = "http://example.com/image.jpg")
     private String head_image_url;
+
+    @Column(nullable = true)
+    @Schema(description = "Stage of the course", example = "1.00000")
+    private BigDecimal stage;
 
     @PrePersist
     protected void onCreate() {

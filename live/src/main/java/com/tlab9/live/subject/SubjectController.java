@@ -2,6 +2,7 @@ package com.tlab9.live.subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -137,5 +138,44 @@ public class SubjectController {
         log.info("Successfully found {} subjects", subjects.size());
         log.info("Exiting searchSubjects method");
         return subjects;
+    }
+
+    @Operation(summary = "Get subjects by course ID")
+    @GetMapping("/bycourseid/{course_id}")
+    public List<Subject> getSubjectsByCourseId(@PathVariable("course_id") String courseId) {
+        log.info("Entering getSubjectsByCourseId method with course_id: {}", courseId);
+
+        Specification<Subject> spec = (root, query, cb) -> cb.equal(root.get("course_id"), courseId);
+
+        List<Subject> subjects = subjectRepository.findAll(spec);
+        log.info("Exiting getSubjectsByCourseId method with subjects: {}", subjects);
+
+        return subjects;
+    }
+
+    @Operation(summary = "Update subjects list in the course")
+    @PostMapping("/updateseqno")
+    public ResponseEntity<String> updateSequenceNumbers(@RequestBody List<Subject> subjects) {
+        log.info("Entering updateSequenceNumbers method with subjects: {}", subjects);
+    
+        for (Subject subject : subjects) {
+            Subject existingSubject = subjectRepository.findById(subject.getSubject_id())
+                    .orElseGet(() -> {
+                        log.warn("Subject not found with id " + subject.getSubject_id());
+                        return null;
+                    });
+    
+            if (existingSubject == null) {
+                String errorMessage = "Subject not found with id " + subject.getSubject_id();
+                log.error(errorMessage);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            }
+    
+            existingSubject.setSeq_no(subject.getSeq_no());
+            subjectRepository.save(existingSubject);
+        }
+    
+        log.info("Exiting updateSequenceNumbers method");
+        return ResponseEntity.ok("Sequence numbers updated successfully");
     }
 }
