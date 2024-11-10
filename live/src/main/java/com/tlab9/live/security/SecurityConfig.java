@@ -35,9 +35,15 @@ public class SecurityConfig {
         config.addAllowedOrigin("http://localhost:3000"); // Specify exact origins
         config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("http://localhost:8081");
+        config.addAllowedOrigin("http://localhost:8082");
+        config.addAllowedOrigin("http://localhost:8083");
+        config.addAllowedOrigin("http://localhost:8084");
         config.addAllowedOrigin("https://localhost:3000");
         config.addAllowedOrigin("https://localhost:8080");
         config.addAllowedOrigin("https://localhost:8081");
+        config.addAllowedOrigin("https://localhost:8082");
+        config.addAllowedOrigin("https://localhost:8083");
+        config.addAllowedOrigin("https://localhost:8084");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
@@ -76,9 +82,15 @@ public class SecurityConfig {
         config.addAllowedOrigin("http://localhost:3000"); // HTTP origin
         config.addAllowedOrigin("http://localhost:8080"); // HTTP origin
         config.addAllowedOrigin("http://localhost:8081"); // HTTP origin
+        config.addAllowedOrigin("http://localhost:8082"); // HTTP origin
+        config.addAllowedOrigin("http://localhost:8083"); // HTTP origin
+        config.addAllowedOrigin("http://localhost:8084"); // HTTP origin
         config.addAllowedOrigin("https://localhost:3000"); // HTTPS origin
         config.addAllowedOrigin("https://localhost:8080"); // HTTPS origin
         config.addAllowedOrigin("https://localhost:8081"); // HTTPS origin
+        config.addAllowedOrigin("https://localhost:8082"); // HTTPS origin
+        config.addAllowedOrigin("https://localhost:8083"); // HTTPS origin
+        config.addAllowedOrigin("https://localhost:8084"); // HTTPS origin
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
