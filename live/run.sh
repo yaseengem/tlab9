@@ -42,13 +42,13 @@ if [ "$ENV" = "dev" ]; then
   docker volume ls
 #   echo "Clear docker cache"
 #   docker system prune -a -f
+#   docker system prune -a --volumes -f
   # echo "Remove Unused docker images"
   # docker image prune -a -f 
   # echo "Remove Unused docker containers, volumes, networks"
   # docker container prune -f
   docker volume prune -f
   docker network prune -f
-  docker system prune -a --volumes -f
   echo "Free disk space info after cleaning:"
   df -h --total | awk '/total/ {print "Total: " $2 ", Used: " $3 ", Free: " $4}'
 fi

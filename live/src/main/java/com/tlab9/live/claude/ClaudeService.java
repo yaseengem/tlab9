@@ -46,7 +46,7 @@ public class ClaudeService {
         headers.set("Content-Type", "application/json");
 
         Prompt requestBody = new Prompt();
-        requestBody.setModel("claude-3-5-sonnet-20240620");
+        requestBody.setModel("claude-3-5-haiku-20241022");
         requestBody.setMax_tokens(400);
         requestBody.setTemperature(0.7); // Set the temperature here
         requestBody.setMessages(Collections.singletonList(new Prompt.Message("user", prompt)));
