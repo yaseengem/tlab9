@@ -37,3 +37,4 @@ secrets.env
 .env
 
 /app
+/logs
