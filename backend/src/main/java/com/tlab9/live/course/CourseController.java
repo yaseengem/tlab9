@@ -39,7 +39,7 @@ public class CourseController {
     @Operation(summary = "Get a course by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-        log.info("Entering getCourseById method with id: {}", id);
+        log.info("Entering getCourseById method now with id: {}", id);
         ResponseEntity<Course> response = courseRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
