@@ -8,7 +8,7 @@ services:
     image: track9/app:${ENV}
     build: .
     ports:
-      - "${DOCKER_PORT}:8080"
+      - "${APP_PORT}:8080"
     env_file:
       - ./.env
       - ./var.env
