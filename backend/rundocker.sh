@@ -35,10 +35,10 @@ docker build -t track_app:$IMAGE_TAG .
 
 # Step 6: Stop the existing track_app container in the track_app_dev project
 echo "Stopping the existing track_app container..."
-docker compose -p track_app_dev stop track_app
+docker compose -f docker-compose.track_app.yml stop track_app
 
 # Step 7: Start the track_app container in the track_app_dev project
 echo "Starting the track_app container..."
-docker compose -p track_app_dev up -d --build track_app
+docker compose -f docker-compose.track_app.yml up -d --build track_app
 
 echo "Deployment completed successfully!"

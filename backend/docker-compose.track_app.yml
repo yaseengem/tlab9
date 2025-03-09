@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  track_app:
+    image: track_app:dev
+    container_name: track_app
+    env_file:
+      - ./.env
+    volumes:
+      - ./app/files:/files
+    depends_on:
+      - track_db
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - trackj_default_network
+
+networks:
+  trackj_default_network:
+    name: trackj_default_network
